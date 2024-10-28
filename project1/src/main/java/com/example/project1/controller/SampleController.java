@@ -65,6 +65,7 @@ public class SampleController {
 
         rttr.addAttribute("age", 15); // http://localhost:8080/ex1?age=15
         rttr.addAttribute("name", "hong"); // http://localhost:8080/ex1?age=15&name=hong
+        rttr.addFlashAttribute("addr", "seoul");
 
         return "redirect:/ex1"; // sendRedirect() : redirect :경로
     }
@@ -85,8 +86,15 @@ public class SampleController {
     }
 
     @GetMapping("/sample/ex2")
-    public void getEx2() {
+    public void getEx2(@ModelAttribute("param") String param1, String param2) {
         log.info("ex2 컨트롤러 동작");
+        log.info(param1);
+        log.info(param2);
+        log.info("{}, {}", param1, param2);
+
+        // (String param1, String param2, Model model)
+        // model.addAttribute("param3", param1);
+        // model.addAttribute("param2", param2);
     }
 
     @GetMapping("/ex3")
@@ -181,6 +189,26 @@ public class SampleController {
         log.info("{} {} {} = {}", calcDTO.getNum1(), calcDTO.getOp(),
                 calcDTO.getNum2(), result);
         model.addAttribute("result", result);
+    }
+
+    @GetMapping("/fragments/separate")
+    public void getSeparate() {
+        log.info("separate 페이지 요청");
+    }
+
+    @GetMapping("/sample/main")
+    public void getMain() {
+        log.info("main 페이지 요청");
+    }
+
+    @GetMapping("/layouts/layout")
+    public void getLayout() {
+        log.info("layout 페이지 요청");
+    }
+
+    @GetMapping("/sample/list")
+    public void getList() {
+        log.info("list 페이지 요청");
     }
 
 }

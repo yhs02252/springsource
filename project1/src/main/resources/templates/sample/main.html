@@ -6,8 +6,9 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>EX2</h1>
-    <h3 th:text="${param.param1}"></h3>
-    <h3 th:text="${param.param2}"></h3>
+    <div th:insert="~{/fragments/header::header}"></div>
+    <h1>Thymeleaf Layout</h1>
+    <div th:insert="~{/fragments/separate::content}"></div>
+    <div th:replace="~{/fragments/separate::footer}"></div>
   </body>
 </html>

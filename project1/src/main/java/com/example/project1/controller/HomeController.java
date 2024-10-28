@@ -2,6 +2,8 @@ package com.example.project1.controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.LongStream;
 
@@ -24,6 +26,7 @@ public class HomeController {
         log.info("index 요청");
 
         model.addAttribute("name", "hong");
+        // model.addAttribute("index", "indexform");
 
         LoginDTO loginDTO = new LoginDTO("hong465", "12345");
         model.addAttribute("login", loginDTO);
@@ -54,6 +57,11 @@ public class HomeController {
             list.add(dto);
         });
         model.addAttribute("list", list);
+
+        model.addAttribute("now", new Date());
+        model.addAttribute("price", 123456789);
+        model.addAttribute("options", Arrays.asList("AAAA", "BBBB", "CCCC", "DDDD"));
+        model.addAttribute("title", "This is just sample");
 
         return "index";
     }

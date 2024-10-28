@@ -7,21 +7,36 @@
   </head>
   <body>
     <h1>LOGIN</h1>
-    <form action="" method="post">
+    <form action="" method="post" th:object="${loginDTO}">
       <div>
         <label for="userid">userid</label>
-        <input type="test" name="userid" id="userid" />
+        <input
+          type="test"
+          name="userid"
+          id="userid"
+          th:value="${loginDTO.userid}"
+        />
+        <div
+          class="text-danger"
+          th:if="${#fields.hasErrors('userid')}"
+          th:errors="*{userid}"
+        ></div>
       </div>
       <div>
         <label for="password">password</label>
-        <input type="password" name="password" id="password" />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          th:value="${loginDTO.password}"
+        />
+        <div
+          class="text-danger"
+          th:if="${#fields.hasErrors('password')}"
+          th:errors="*{password}"
+        ></div>
       </div>
       <button>로그인</button>
     </form>
-    <ul>
-      <li>아이디 : <span th:text="${memberDTO?.userid}"></span></li>
-      <li>비밀번호 : <span th:text="${memberDTO?.password}"></span></li>
-      <li>이름 : <span th:text="${memberDTO?.name}"></span></li>
-    </ul>
   </body>
 </html>
