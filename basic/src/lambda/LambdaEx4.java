@@ -23,7 +23,7 @@ public class LambdaEx4 {
         System.out.println(s1.get());
 
         Supplier<String> str1 = () -> "안녕하세요";
-        System.out.println(str1);
+        System.out.println(str1.get());
 
         // Consumer - 매개값을 가진다면 본인이 실행(본인이 Method)
         Consumer<Integer> c = (i) -> System.out.println(i * i);
