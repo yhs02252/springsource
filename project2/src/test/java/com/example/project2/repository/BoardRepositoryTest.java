@@ -39,7 +39,7 @@ public class BoardRepositoryTest {
     @Test
     public void selectAllTest() {
         // 1번 방법
-        // boardRepository.findAll().forEach(board -> System.out.println(board));
+        boardRepository.findAll().forEach(board -> System.out.println(board));
 
         // 2번 방법
         // IntStream.rangeClosed(0, 9).forEach(i -> {
@@ -67,19 +67,19 @@ public class BoardRepositoryTest {
     @Test
     public void updateTest() {
         // 1번 방법 - 각 컬럼별 선택
-        // ProBoard proBoard = boardRepository.findById(13L).get();
-        // proBoard.setTitle("추가 제목");
-        // proBoard.setWriter("다른작성자");
-        // boardRepository.save(proBoard);
+        ProBoard proBoard = boardRepository.findById(13L).get();
+        proBoard.setTitle("추가 제목");
+        proBoard.setWriter("다른작성자");
+        boardRepository.save(proBoard);
 
         // 2번 방법 - 하나의 열 전체 컬럼 선택
-        ProBoard proBoard = ProBoard.builder()
-                .id(8L)
-                .content("아무내용")
-                .title("아무제목")
-                .writer("아무작성자")
-                .build();
-        boardRepository.save(proBoard);
+        // ProBoard proBoard = ProBoard.builder()
+        // .id(8L)
+        // .content("아무내용")
+        // .title("아무제목")
+        // .writer("아무작성자")
+        // .build();
+        // boardRepository.save(proBoard);
     }
 
     @Test
