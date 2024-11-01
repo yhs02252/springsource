@@ -1,5 +1,6 @@
 package com.example.project3.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -210,10 +211,10 @@ public class TeamMemberRepositoryTest {
         // System.out.println(members);
         // });
 
-        IntStream memStream = IntStream.rangeClosed(6, 10);
-        memStream.forEach(i -> {
-            memberRepository.findByUserName("성춘향" + i);
-        });
-        System.out.println(memStream);
+        // IntStream memStream = IntStream.rangeClosed(6, 10);
+        // memStream.forEach(i -> {
+        // memberRepository.findByUserName("성춘향" + i);
+        // });
+        // System.out.println(memStream); 정보가 안나옴
     }
 }
