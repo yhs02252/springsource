@@ -211,10 +211,10 @@ public class TeamMemberRepositoryTest {
         // System.out.println(members);
         // });
 
-        // IntStream memStream = IntStream.rangeClosed(6, 10);
-        // memStream.forEach(i -> {
-        // memberRepository.findByUserName("성춘향" + i);
-        // });
-        // System.out.println(memStream); 정보가 안나옴
+        IntStream memStream = IntStream.rangeClosed(6, 10);
+        memStream.forEach(i -> {
+            System.out.println(memberRepository.findByUserName("성춘향" + i));
+        });
+        // System.out.println(memStream); ※ 정보가 안나옴 ※
     }
 }

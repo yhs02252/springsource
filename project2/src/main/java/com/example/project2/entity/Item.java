@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@SequenceGenerator(name = "item_seq_gen", sequenceName = "item_seq", allocationSize = 1)
+@SequenceGenerator(name = "item_seq_gen", sequenceName = "board_item_seq", allocationSize = 1)
 @Entity
 public class Item {
 
