@@ -1,4 +1,4 @@
-package com.example.mart.entitty;
+package com.example.mart.entitty.item;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.example.mart.entitty.constant.OrderStatus;
+import com.example.mart.entitty.item.Delivery;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,6 +20,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,14 +32,14 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString(exclude = { "member", "orderItemList" })
+@ToString(exclude = { "member", "orderItemList", "delivery" })
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "mart_orders")
 @SequenceGenerator(name = "mart_order_seq_gen", sequenceName = "order_seq", allocationSize = 1)
 @Entity
-public class Order {
+public class Order extends BaseEntity {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mart_order_seq_gen")
@@ -60,4 +62,7 @@ public class Order {
     @Builder.Default
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItemList = new ArrayList<>();
+
+    @OneToOne
+    private Delivery delivery;
 }

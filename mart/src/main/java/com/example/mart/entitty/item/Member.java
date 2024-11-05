@@ -1,4 +1,4 @@
-package com.example.mart.entitty;
+package com.example.mart.entitty.item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import lombok.ToString;
 @SequenceGenerator(name = "mart_member_seq_gen", sequenceName = "member_seq", allocationSize = 1)
 @Table(name = "mart_member")
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @Column(name = "member_id")

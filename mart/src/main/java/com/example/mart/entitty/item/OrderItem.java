@@ -1,4 +1,4 @@
-package com.example.mart.entitty;
+package com.example.mart.entitty.item;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,7 +22,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @SequenceGenerator(name = "mart_order_item_seq_gen", sequenceName = "order_item_seq", allocationSize = 1)
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
     @Id
     @Column(name = "order_item_id")

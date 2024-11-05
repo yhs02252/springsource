@@ -7,11 +7,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.mart.entitty.Item;
-import com.example.mart.entitty.Member;
-import com.example.mart.entitty.Order;
-import com.example.mart.entitty.OrderItem;
+import com.example.mart.entitty.item.Item;
+import com.example.mart.entitty.item.Member;
+import com.example.mart.entitty.item.Order;
+import com.example.mart.entitty.item.OrderItem;
+import com.example.mart.entitty.constant.DeliveryStatus;
 import com.example.mart.entitty.constant.OrderStatus;
+import com.example.mart.entitty.item.Delivery;
+import com.example.mart.repository.item.DeliveryRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -29,6 +32,9 @@ public class MartRepositoryTest {
 
     @Autowired
     private ItemRepository itemRepository;
+
+    @Autowired
+    private DeliveryRepository deliveryRepository;
 
     // C
     @Test
@@ -69,7 +75,7 @@ public class MartRepositoryTest {
 
         OrderItem orderItem = OrderItem.builder()
                 .price(item.getPrice())
-                .count(3)
+                .count(2)
                 .order(order)
                 .item(item)
                 .build();
@@ -160,7 +166,7 @@ public class MartRepositoryTest {
     @Test
     public void memberAndItemAndOrderDeleteTest() {
 
-        OrderItem orderItem = orderItemRepository.findById(6L).get();
+        OrderItem orderItem = orderItemRepository.findById(8L).get();
         Long orderItemId = orderItem.getId();
 
         // 연관된 Entity 작업 롤백
@@ -189,7 +195,7 @@ public class MartRepositoryTest {
     @Transactional
     public void testOrderItemList() {
 
-        Order order = orderRepository.findById(4L).get();
+        Order order = orderRepository.findById(21L).get();
         System.out.println(order);
         order.getOrderItemList().forEach(orderItem -> System.out.println(orderItem));
 
@@ -206,5 +212,44 @@ public class MartRepositoryTest {
         member.getOrderList().forEach(orders -> {
             System.out.println(orders);
         });
+    }
+
+    // 일대일
+
+    @Test
+    public void deliveryInsertTest() {
+        // 배송정보 입력
+        Delivery delivery = Delivery.builder()
+                .city("서울시")
+                .street("71-751길")
+                .zipcode("15864")
+                .deliveryStatus(DeliveryStatus.READY)
+                .build();
+        deliveryRepository.save(delivery);
+
+        // order와 배송정보 연결
+        Order order = orderRepository.findById(21L).get();
+        order.setDelivery(delivery);
+        orderRepository.save(order);
+    }
+
+    @Test
+    public void testOrderRead() {
+        // order 조회 (배송정보)
+        Order order = orderRepository.findById(21L).get();
+        System.out.println(order);
+        System.out.println(order.getDelivery());
+        System.out.println(order.getDelivery().getDeliveryStatus());
+    }
+
+    // 양방향(배송 => 주문)
+    @Test
+    @Transactional
+    public void testDeliveryRead() {
+        Delivery delivery = deliveryRepository.findById(1L).get();
+        System.out.println(delivery);
+        System.out.println(delivery.getOrder());
+        System.out.println(delivery.getOrder().getOrderDate());
+        System.out.println(delivery.getOrder().getOrderItemList());
     }
 }
