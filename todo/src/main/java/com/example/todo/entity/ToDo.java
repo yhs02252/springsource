@@ -21,16 +21,18 @@ import lombok.NoArgsConstructor;
 @SequenceGenerator(name = "todo_seq_gen", sequenceName = "todo_seq", allocationSize = 1)
 @DynamicInsert // default 값 동작
 @Entity(name = "todotbl")
-public class ToDo {
+public class ToDo extends BaseEntity {
 
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "todo_seq_gen")
     @Column(name = "todo_id")
     @Id
     private Long id;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     private Boolean completed;
 
+    @Column(nullable = false)
     @ColumnDefault("0")
     private Boolean important;
 

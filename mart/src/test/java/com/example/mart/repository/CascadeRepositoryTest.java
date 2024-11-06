@@ -1,5 +1,6 @@
 package com.example.mart.repository;
 
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 import org.junit.jupiter.api.Test;
@@ -90,10 +91,13 @@ public class CascadeRepositoryTest {
     @Test
     @Transactional
     public void testParentRead() {
-        // 자식2 정보 조회(+부모조회)
-        Parent parent = parentRepository.findById(3L).get();
+        // 부모 정보 조회(+자식조회)
+        Parent parent = parentRepository.findById(16L).get();
         System.out.println(parent);
-        System.out.println(parent.getChilds());
+
+        parent.getChilds().forEach(child -> {
+            System.out.println(child);
+        });
     }
 
     @Test
@@ -103,10 +107,10 @@ public class CascadeRepositoryTest {
         parentRepository.deleteById(21L);
     }
 
-    @Commit // 코드는 실행됐지만 delete가 작동되지않아 실행결과에 맞는 결과가 작동하도록 넣음
+    @Commit // 코드는 실행됐지만 delete가 작동되지않아 실행결과에 맞는 결과가 작동하도록 만듬
     @Test
     @Transactional
-    public void testDeleteParent() {
+    public void testCascadeAllDeleteParent() {
         Parent parent = parentRepository.findById(18L).get();
         // 부모 삭제시 관련되어있는 자식 같이 삭제
         // 자식삭제 코드를 작성하지 않고

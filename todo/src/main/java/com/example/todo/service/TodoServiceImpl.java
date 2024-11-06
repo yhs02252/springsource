@@ -19,7 +19,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class TodoServiceImpl implements TodoService {
 
-    @Autowired
+    @Autowired // <- RequiredArgsConstructor 덕분에 필요없음
     private final TodoRepository todoRepository;
 
     @Override

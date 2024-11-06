@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.data.annotation.CreatedDate;
 
 import com.example.mart.entitty.constant.OrderStatus;
-import com.example.mart.entitty.item.Delivery;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;

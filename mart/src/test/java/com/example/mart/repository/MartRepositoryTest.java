@@ -11,6 +11,9 @@ import com.example.mart.entitty.item.Item;
 import com.example.mart.entitty.item.Member;
 import com.example.mart.entitty.item.Order;
 import com.example.mart.entitty.item.OrderItem;
+import com.example.mart.entitty.product.Album;
+import com.example.mart.entitty.product.Book;
+import com.example.mart.entitty.product.Movie;
 import com.example.mart.entitty.constant.DeliveryStatus;
 import com.example.mart.entitty.constant.OrderStatus;
 import com.example.mart.entitty.item.Delivery;
@@ -53,9 +56,32 @@ public class MartRepositoryTest {
 
     @Test
     public void itemInsertTest() {
-        IntStream.rangeClosed(1, 3).forEach(i -> {
-            itemRepository.save(Item.builder().id(1L + i).name("상품" + i).price(10000).quantity(i + 30).build());
-        });
+        // IntStream.rangeClosed(1, 3).forEach(i -> {
+        // itemRepository.save(Item.builder().id(1L + i).name("상품" +
+        // i).price(10000).quantity(i + 30).build());
+        // });
+        Album album = new Album();
+        album.setArtist("로제");
+        album.setName("아파트");
+        album.setPrice(15200);
+        album.setQuantity(15);
+        itemRepository.save(album);
+
+        Book book = new Book();
+        book.setAuthor("한강");
+        book.setIsbn("112ㄱ");
+        book.setName("소년이 온다");
+        book.setPrice(10000);
+        book.setQuantity(15);
+        itemRepository.save(book);
+
+        Movie movie = new Movie();
+        movie.setDirector("리들리 스콧");
+        movie.setActor("폴 메스칼");
+        movie.setName("글래디에이터2");
+        movie.setPrice(25000);
+        movie.setQuantity(300);
+        itemRepository.save(movie);
     }
 
     @Test
