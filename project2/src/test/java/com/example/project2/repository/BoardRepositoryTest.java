@@ -92,4 +92,11 @@ public class BoardRepositoryTest {
         // result.ifPresent(idnum -> boardRepository.delete(idnum));
 
     }
+
+    // 쿼리 메소드
+    @Test
+    public void testTitleList() {
+        boardRepository.findByTitle("제목6").forEach(i -> System.out.println(i));
+        boardRepository.findByTitleLike("제목").forEach(i -> System.out.println(i));
+    }
 }

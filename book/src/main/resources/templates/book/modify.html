@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<div lang="en" layout:decorate="~{/layouts/layout}">
+  <th:block layout:fragment="css">
+    <style></style>
+    <!-- 개별 css영역 -->
+  </th:block>
+  <div th:replace="~{/fragment/header::header}">
+    <!-- header 영역 -->
+  </div>
+
+  <div layout:fragment="content" class="container">
+    <h1>메인 화면</h1>
+    <form action="" method="post">
+      <div class="mb-3 row">
+        <label for="categoryName" class="col-sm-2 col-form-label"
+          >카테고리</label
+        >
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="categoryName"
+            name="categoryName"
+            readonly
+            th:value="${dto.categoryName}"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="title" class="col-sm-2 col-form-label">제목</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            readonly
+            th:value="${dto.title}"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="writer" class="col-sm-2 col-form-label">저자</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="writer"
+            name="writer"
+            readonly
+            th:value="${dto.writer}"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="price" class="col-sm-2 col-form-label">가격</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="price"
+            name="price"
+            th:value="${dto.price}"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="salePrice" class="col-sm-2 col-form-label">할인 가격</label>
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="salePrice"
+            name="salePrice"
+            th:value="${dto.salePrice}"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="publisherName" class="col-sm-2 col-form-label"
+          >출판사</label
+        >
+        <div class="col-sm-10">
+          <input
+            type="text"
+            class="form-control"
+            id="publisherName"
+            name="publisherName"
+            readonly
+            th:value="${dto.publisherName}"
+          />
+        </div>
+      </div>
+      <div>
+        <button class="btn btn-primary" type="submit">확인</button>
+        <button type="button" class="btn btn-danger">삭제</button>
+        <a th:href="@{read(id=${dto.id})}" class="btn btn-secondary"
+          >돌아가기</a
+        >
+      </div>   
+    </form>
+
+    <form action="" method="post" id="actionForm">
+     <input type="hidden" name="id" th:value="${dto.id}" />
+    </form>
+  </div>
+  <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
+  <th:block layout:fragment="script">
+    <script>
+      // <!-- script 영역 -->
+    </script>
+    <script th:src="@{/js/modify.js}"></script>
+  </th:block>
+</html>
