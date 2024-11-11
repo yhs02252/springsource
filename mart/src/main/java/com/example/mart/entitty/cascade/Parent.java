@@ -39,11 +39,11 @@ public class Parent extends BaseEntity {
 
     // 양방향
 
-    // CascadeType.PERSIST : 영속 상태 전이 new
+    // CascadeType.PERSIST : 영속 상태 전이 == new
     // CascadeType.MERGE : 병합
     // CascadeType.REMOVE : 삭제
     // CascadeType.ALL : 전체
-    // CascadeType.REFRESH :
+    // CascadeType.REFRESH : 덮어씌움
     // CascadeType.DETACH : 분리
 
     // orphanRemoval = true : 부모 Entity 에서 자식 Entity의 참조 제거

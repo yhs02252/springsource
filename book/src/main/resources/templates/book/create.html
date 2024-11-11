@@ -18,11 +18,12 @@
         <div class="col-sm-10">
           <select name="categoryName" id="" class="form-select">
             <option value="" th:selected="${dto.categoryName} == ''">
+              <!-- 기본상태일 때 공백 지정-->
               카테고리 선택
             </option>
             <option
-              th:value="${cate.id}"
               th:each="cate : ${cDtos}"
+              th:value="${cate.id}"
               th:text="${cate.categoryName}"
               th:selected="${dto.categoryName} == ${cate.id}"
             ></option>
@@ -44,8 +45,8 @@
               출판사 선택
             </option>
             <option
-              th:value="${publ.id}"
               th:each="publ : ${pDtos}"
+              th:value="${publ.id}"
               th:text="${publ.publisherName}"
               th:selected="${dto.publisherName} == ${publ.id}"
             ></option>
@@ -127,7 +128,7 @@
       </div>
       <div>
         <button class="btn btn-primary">등록</button>
-        <a th:href="@{list}" class="btn btn-secondary">목록</a>
+        <a th:href="@{bookList}" class="btn btn-secondary">목록</a>
       </div>
     </form>
   </div>

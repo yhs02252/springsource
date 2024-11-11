@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>mart</artifactId>
+	<artifactId>jpql</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mart</name>
+	<name>jpql</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -69,20 +69,21 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- QueryDSL 라이브러리 -->
-<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
+		<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
 <dependency>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-jpa</artifactId>
     <version>5.1.0</version>
-    <classifier>jakarta</classifier>
+	<classifier>jakarta</classifier>
 </dependency>
 <!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-apt -->
 <dependency>
     <groupId>com.querydsl</groupId>
     <artifactId>querydsl-apt</artifactId>
     <version>5.1.0</version>
-    <classifier>jakarta</classifier>
+	<classifier>jakarta</classifier>
 </dependency>
+
 	</dependencies>
 
 	<build>
