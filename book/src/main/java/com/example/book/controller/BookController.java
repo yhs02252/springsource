@@ -15,7 +15,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.book.dto.BookDTO;
 import com.example.book.dto.CategoryDTO;
+import com.example.book.dto.PageRequestDTO;
+import com.example.book.dto.PageResultDTO;
 import com.example.book.dto.PublisherDTO;
+import com.example.book.entity.Book;
 import com.example.book.service.BookService;
 
 import jakarta.validation.Valid;
@@ -33,10 +36,11 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping("/bookList")
-    public void getBookList(Model model) {
+    public void getBookList(PageRequestDTO pageRequestDTO, Model model) {
         log.info("도서 리스트 목록 요청");
-        List<BookDTO> list = bookService.getList();
-        model.addAttribute("list", list);
+
+        PageResultDTO<BookDTO, Book> result = bookService.getList(pageRequestDTO);
+        model.addAttribute("result", result);
     }
 
     @GetMapping(path = { "/read", "/modify" })

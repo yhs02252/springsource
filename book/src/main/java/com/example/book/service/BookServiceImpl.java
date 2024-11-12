@@ -1,12 +1,19 @@
 package com.example.book.service;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.example.book.dto.BookDTO;
 import com.example.book.dto.CategoryDTO;
+import com.example.book.dto.PageRequestDTO;
+import com.example.book.dto.PageResultDTO;
 import com.example.book.dto.PublisherDTO;
 import com.example.book.entity.Book;
 import com.example.book.entity.Category;
@@ -41,13 +48,23 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDTO> getList() {
+    // public List<BookDTO> getList() {
+    public PageResultDTO<BookDTO, Book> getList(PageRequestDTO pageRequestDTO) {
 
-        List<Book> result = bookRepository.findAll();
+        // 페이지 나누기 개념이 없을 때
+        // List<Book> result = bookRepository.findAll();
 
-        return result.stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
+        // return result.stream().map(entity ->
+        // entityToDto(entity)).collect(Collectors.toList());
         // Repository(entity)에 있는 정보를 List로 만들어, stream으로 변환 후 map으로 일치하는 정보를 찾아
         // collector로 리스트화시켜 담기
+
+        // 페이지 나누기 개념 추가
+        Pageable pageable = pageRequestDTO.getPageable(Sort.by("id").descending());
+        Page<Book> result = bookRepository.findAll(bookRepository.makePredicate(null, null), pageable);
+
+        Function<Book, BookDTO> fn = (entity -> entityToDto(entity));
+        return new PageResultDTO(result, fn);
     }
 
     @Override

@@ -19,7 +19,7 @@
                 <th scope="col">출판사</th>
               </tr>
             </thead>
-            <div th:each="dto : ${list}">
+            <div th:each="dto : ${result.dtoList}">
               <tbody>
                 <tr>
                   <th scope="row" th:text="${dto.id}"></th>
@@ -40,11 +40,56 @@
         </div>
       </div>
     </section>
+    <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:if="${result.prev}">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.start-1},size = ${result.size})}"
+            >Prev목록</a
+          >
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.page == 1 ? 1 : result.page-1},size = ${result.size})}"
+            >이전</a
+          >
+        </li>
+
+        <li
+          th:each="page : ${result.pageList}"
+          th:class="'page-item ' + ${result.page == page ? 'active' : ''}"
+          aria-current="page"
+        >
+          <a
+            class="page-link"
+            th:href="@{bookList(page=${page}, size=${result.size})}"
+            th:text="${page}"
+          ></a>
+        </li>
+
+        <li class="page-item">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.page == result.end ? result.end : result.page+1},size = ${result.size})}"
+            >다음</a
+          >
+        </li>
+        <li class="page-item" th:if="${result.next}">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.end+1},size = ${result.size})}"
+            >Next목록</a
+          >
+        </li>
+      </ul>
+    </nav>
 
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-          <div class="col" th:each="dto : ${list}">
+          <div class="col" th:each="dto : ${result.dtoList}">
             <div class="card shadow-sm">
               <svg
                 class="bd-placeholder-img card-img-top"
@@ -96,8 +141,8 @@
                     </button>
                   </div>
                   <small class="text-body-secondary"
-                    >[[${#temporals.format(dto.lastModifiedDateTime, 'mm')}]]분
-                    전</small
+                    >[[${#temporals.format(dto.lastModifiedDateTime, mm==60 ?
+                    'HH' : 'mm')}]]분 전</small
                   >
                 </div>
               </div>
@@ -106,6 +151,51 @@
         </div>
       </div>
     </div>
+    <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" th:if="${result.prev}">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.start-1},size = ${result.size})}"
+            >Prev목록</a
+          >
+        </li>
+        <li class="page-item">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.page == 1 ? 1 : result.page-1},size = ${result.size})}"
+            >이전</a
+          >
+        </li>
+
+        <li
+          th:each="page : ${result.pageList}"
+          th:class="'page-item ' + ${result.page == page ? 'active' : ''}"
+          aria-current="page"
+        >
+          <a
+            class="page-link"
+            th:href="@{bookList(page=${page}, size=${result.size})}"
+            th:text="${page}"
+          ></a>
+        </li>
+
+        <li class="page-item">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.page == result.end ? result.end : result.page+1},size = ${result.size})}"
+            >다음</a
+          >
+        </li>
+        <li class="page-item" th:if="${result.next}">
+          <a
+            class="page-link"
+            th:href="@{bookList(page = ${result.end+1},size = ${result.size})}"
+            >Next목록</a
+          >
+        </li>
+      </ul>
+    </nav>
   </div>
   <th:block layout:fragment="script">
     <script>

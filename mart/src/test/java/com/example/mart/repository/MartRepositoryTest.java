@@ -1,6 +1,8 @@
 package com.example.mart.repository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -97,7 +99,7 @@ public class MartRepositoryTest {
                 .build();
         orderRepository.save(order);
 
-        Item item = itemRepository.findById(2L).get();
+        Item item = itemRepository.findById(23L).get();
 
         OrderItem orderItem = OrderItem.builder()
                 .price(item.getPrice())
@@ -115,6 +117,26 @@ public class MartRepositoryTest {
         orderItem.setPrice(item.getPrice() * orderItem.getCount());
         orderItemRepository.save(orderItem);
 
+    }
+
+    @Test
+    public void orderItemInsertTest() {
+
+        Item item = itemRepository.findById(23L).get();
+        Order order = Order.builder().id(21L).build();
+
+        OrderItem orderItem = OrderItem.builder()
+                .price(50000)
+                .count(4)
+                .order(order)
+                .item(item)
+                .build();
+        orderItemRepository.save(orderItem);
+
+        // item 수량 감소
+
+        item.setQuantity(item.getQuantity() - orderItem.getCount());
+        itemRepository.save(item);
     }
 
     // R
@@ -277,5 +299,61 @@ public class MartRepositoryTest {
         System.out.println(delivery.getOrder());
         System.out.println(delivery.getOrder().getOrderDate());
         System.out.println(delivery.getOrder().getOrderItemList());
+    }
+
+    // QeuryDsl 테스트
+    @Test
+    public void testQueryDslMember() {
+        System.out.println(orderRepository.members());
+    }
+
+    @Test
+    public void testQueryItem() {
+        System.out.println(orderRepository.items());
+    }
+
+    @Test
+    public void testJoinOrderAndMember() {
+        // System.out.println(orderRepository.joinTest());
+        // [[Ljava.lang.Object;@1ac65143] -> List 형태로 toString 하여 뽑아내야함 : 결과값이 두개라서
+
+        List<Object[]> result = orderRepository.joinTest();
+
+        for (Object[] objects : result) {
+            System.out.println(Arrays.toString(objects));
+
+            System.out.println((Order) objects[0]);
+            System.out.println((Member) objects[1]);
+        }
+    }
+
+    @Test
+    public void testThreeLeftJoin() {
+        List<Object[]> result = orderRepository.threeJoinTest();
+
+        for (Object[] objects : result) {
+            System.out.println(Arrays.toString(objects));
+
+            // System.out.println(objects[0]);
+            // System.out.println(objects[1]);
+            // System.out.println(objects[2]);
+
+            System.out.println((Order) objects[0]);
+            System.out.println((Member) objects[1]);
+            System.out.println((OrderItem) objects[2]);
+        }
+    }
+
+    @Test
+    public void subQueryTest() {
+        List<Object[]> list = orderRepository.subQueryTest();
+
+        for (Object[] objects : list) {
+            System.out.println(Arrays.toString(objects));
+
+            System.out.println("order 아이디 : " + (Long) objects[0]);
+            System.out.println("order 상태 : " + (OrderStatus) objects[1]);
+            System.out.println("주문 개수 : " + (Long) objects[2]);
+        }
     }
 }
