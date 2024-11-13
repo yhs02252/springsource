@@ -109,7 +109,11 @@
         </div>
       </div>
       <div>
-        <a th:href="@{modify(id=${dto.id})}" class="btn btn-primary">수정</a>
+        <a
+          th:href="@{/book/modify(id=${dto.id},page=${pageRequestDTO.page}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+          class="btn btn-primary"
+          >수정</a
+        >
         <a th:href="@{list}" class="btn btn-secondary">목록</a>
       </div>
     </form>
@@ -119,12 +123,24 @@
   <th:block layout:fragment="script">
     <script>
       const list = "[[${list}]]";
+      const page = "[[${pageRequestDTO.page}]]";
+      const size = "[[${pageRequestDTO.size}]]";
+      const type = "[[${pageRequestDTO.type}]]";
+      const keyword = "[[${pageRequestDTO.keyword}]]";
       document
         .querySelector(".btn-secondary")
         .addEventListener("click", (e) => {
           e.preventDefault();
           if (confirm("목록으로 돌아가시겠습니까?")) {
-            location.href = "/book/bookList";
+            location.href =
+              "/book/bookList?page=" +
+              page +
+              "&size=" +
+              size +
+              "&type=" +
+              type +
+              "&keyword=" +
+              keyword;
           } else {
             return;
           }

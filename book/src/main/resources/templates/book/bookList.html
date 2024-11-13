@@ -12,7 +12,7 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">#</th>
+                <th scope="col">번호</th>
                 <th scope="col">분류</th>
                 <th scope="col">제목</th>
                 <th scope="col">저자</th>
@@ -26,7 +26,7 @@
                   <td th:text="${dto.categoryName}"></td>
                   <td>
                     <a
-                      th:href="@{/book/read(id=${dto.id})}"
+                      th:href="@{/book/read(id=${dto.id},page=${result.page}, size=${result.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
                       th:text="${dto.title}"
                       class="text-decoration-none text-reset"
                     ></a>
@@ -64,7 +64,7 @@
         >
           <a
             class="page-link"
-            th:href="@{bookList(page=${page}, size=${result.size})}"
+            th:href="@{bookList(page=${page}, size=${result.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
             th:text="${page}"
           ></a>
         </li>
@@ -113,9 +113,12 @@
               </svg>
               <div class="card-body">
                 <p class="card-text">
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
+                  [[${dto.writer}]] 작가
+                  <li>판매가격 : [[${dto.price}]]원</li>
+                  <li>할인가 : [[${dto.salePrice}]]원</li>
+                  <li>
+                    할인률 : [[${dto.price - dto.salePrice}/${dto.price}*100]]%
+                  </li>
                 </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
@@ -141,8 +144,8 @@
                     </button>
                   </div>
                   <small class="text-body-secondary"
-                    >[[${#temporals.format(dto.lastModifiedDateTime, mm==60 ?
-                    'HH' : 'mm')}]]분 전</small
+                    >[[${#temporals.format(dto.lastModifiedDateTime, 'mm')}]]분
+                    전</small
                   >
                 </div>
               </div>
@@ -203,6 +206,17 @@
       if (id) {
         alert(id);
       }
+
+      // document.querySelector(".page-link").addEventListener("click", (e) => {
+      //   const page = "[[${result.page}]]";
+      //   const startPage = "[[${result.start}]]";
+      //   const endPage = "[[${result.end}]]";
+      //   e.preventDefault();
+
+      //   if (page == startPage || endPage) {
+      //     return;
+      //   }
+      // });
     </script>
     <!-- script 영역 -->
   </th:block>

@@ -97,11 +97,18 @@
         <a th:href="@{read(id=${dto.id})}" class="btn btn-secondary"
           >돌아가기</a
         >
+        <a th:href="@{list}" class="btn btn-secondary" id="listButton"
+          >목록</a
+        >
       </div>   
     </form>
 
     <form action="" method="post" id="actionForm">
      <input type="hidden" name="id" th:value="${dto.id}" />
+     <input type="hidden" name="page" th:value="${pageRequestDTO.page}" />
+     <input type="hidden" name="size" th:value="${pageRequestDTO.size}" />
+     <input type="hidden" name="type" th:value="${pageRequestDTO.type}" />
+     <input type="hidden" name="keyword" th:value="${pageRequestDTO.keyword}" />
     </form>
   </div>
   <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>

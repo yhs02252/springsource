@@ -27,6 +27,8 @@ public interface BookRepository extends JpaRepository<Book, Long>, QuerydslPredi
             builder.and(qBook.title.contains(keyword));
         } else if (type.equals("w")) { // 저자
             builder.and(qBook.writer.contains(keyword));
+        } else if (type.equals("p")) { // 출판사
+            builder.and(qBook.publisher.name.contains(keyword));
         }
 
         return builder;

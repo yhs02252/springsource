@@ -1,20 +1,20 @@
-package com.example.book.controller;
+package com.example.guestbook.controller;
 
 import org.springframework.stereotype.Controller;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.example.book.dto.PageRequestDTO;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Log4j2
 @Controller
 public class HomeController {
 
     @GetMapping("/")
-    public String getHome(PageRequestDTO pageRequestDTO) {
+    public String getHome() {
         log.info("홈 화면 요청");
-        return "index";
+
+        return "redirect:/guestbook/list";
     }
 
 }

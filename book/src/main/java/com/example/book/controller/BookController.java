@@ -44,7 +44,7 @@ public class BookController {
     }
 
     @GetMapping(path = { "/read", "/modify" })
-    public void getBookRead(@RequestParam Long id, Model model) {
+    public void getBookRead(@RequestParam Long id, PageRequestDTO pageRequestDTO, Model model) {
         log.info("도서 상세 페이지 요청 {}", id);
         // 상세내용
 
@@ -54,21 +54,32 @@ public class BookController {
     }
 
     @PostMapping("/modify")
-    public String postBookModify(BookDTO dto, RedirectAttributes rttr) {
+    public String postBookModify(BookDTO dto, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("도서정보 수정 요청");
+        log.info("pageRequestDTO {}", pageRequestDTO);
 
         Long id = bookService.updatePrice(dto);
 
         rttr.addAttribute("id", id);
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
+        rttr.addAttribute("type", pageRequestDTO.getType());
+        rttr.addAttribute("keyword", pageRequestDTO.getKeyword());
 
         return "redirect:read";
     }
 
     @PostMapping("/remove")
-    public String postRemoveBook(@RequestParam Long id) {
+    public String postRemoveBook(@RequestParam Long id, PageRequestDTO pageRequestDTO, RedirectAttributes rttr) {
         log.info("도서 삭제 요청 {}", id);
+        log.info("pageRequestDTO {}", pageRequestDTO);
 
         bookService.delete(id);
+
+        rttr.addAttribute("page", pageRequestDTO.getPage());
+        rttr.addAttribute("size", pageRequestDTO.getSize());
+        rttr.addAttribute("type", pageRequestDTO.getType());
+        rttr.addAttribute("keyword", pageRequestDTO.getKeyword());
         return "redirect:bookList";
     }
 
