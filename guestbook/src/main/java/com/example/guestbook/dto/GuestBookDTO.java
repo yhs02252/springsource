@@ -1,9 +1,9 @@
 package com.example.guestbook.dto;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,10 +21,10 @@ public class GuestBookDTO {
 
     private Long gno;
 
-    @NotBlank(message = "내용을 입력해 주세요")
+    @NotBlank(message = "제목을 입력해 주세요")
     private String title;
 
-    @NotBlank(message = "내용을 입력해 주세요")
+    @NotBlank(message = "작성자을 입력해 주세요")
     private String writer;
 
     @NotBlank(message = "내용을 입력해 주세요")

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{/layouts/layout}">
+  <div layout:fragment="content">
+    <div class="mb-3">
+      <label for="gno">Guest NO.</label>
+      <input
+        type="text"
+        name="gno"
+        id="gno"
+        class="form-control"
+        th:value="${dto.gno}"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        name="title"
+        id="title"
+        class="form-control"
+        th:value="${dto.title}"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label for="content">Content</label>
+      <input
+        type="text"
+        name="content"
+        id="content"
+        class="form-control"
+        th:value="${dto.content}"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label for="writer">writer</label>
+      <input
+        type="text"
+        name="writer"
+        id="writer"
+        class="form-control"
+        th:value="${dto.writer}"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label for="regDate">regDate</label>
+      <input
+        type="text"
+        name="regDate"
+        id="regDate"
+        class="form-control"
+        th:value="${#temporals.format(dto.createdDateTime, 'yyyy-MM-dd HH:mm:ss')}"
+        readonly
+      />
+    </div>
+    <div class="mt-3">
+      <a
+        th:href="@{modify(gno=${dto.gno},page=${requestDTO.page}, size=${requestDTO.size}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"
+        class="btn btn-outline-info"
+        >Modify</a
+      >
+      <a
+        th:href="@{list(page=${requestDTO.page}, size=${requestDTO.size}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"
+        class="btn btn-outline-secondary"
+        >List</a
+      >
+    </div>
+  </div>
+</html>

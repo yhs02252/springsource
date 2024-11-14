@@ -28,12 +28,14 @@ public class GuestBookServiceImpl implements GuestBookService {
 
     @Override
     public Long register(GuestBookDTO dto) {
-        return null;
+        GuestBook guestBook = guestBookRepository.save(dtoToEntity(dto));
+
+        return guestBook.getGno();
     }
 
     @Override
     public GuestBookDTO read(Long gno) {
-        return null;
+        return entityToDto(guestBookRepository.findById(gno).get());
     }
 
     // 기존 방식
@@ -59,12 +61,15 @@ public class GuestBookServiceImpl implements GuestBookService {
 
     @Override
     public Long update(GuestBookDTO dto) {
-        return null;
+        GuestBook guestBook = guestBookRepository.findById(dto.getGno()).get();
+        guestBook.setTitle(dto.getTitle());
+        guestBook.setContent(dto.getContent());
+        return guestBookRepository.save(guestBook).getGno(); // <- 저장 후 gno 를 날림
     }
 
     @Override
     public void delete(Long gno) {
-
+        guestBookRepository.deleteById(gno);
     }
 
 }
