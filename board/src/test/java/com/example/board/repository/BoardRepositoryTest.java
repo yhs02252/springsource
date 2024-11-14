@@ -11,8 +11,6 @@ import com.example.board.entity.Board;
 import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
 
-import jakarta.transaction.Transactional;
-
 @SpringBootTest
 public class BoardRepositoryTest {
 

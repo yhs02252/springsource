@@ -56,15 +56,10 @@
   </div>
   <th:block layout:fragment="script">
     <script>
-      const msg = "[[${msg}]]";
       const page = "[[${requestDTO.page}]]";
       const size = "[[${requestDTO.size}]]";
       const type = "[[${requestDTO.type}]]";
       const keyword = "[[${requestDTO.keyword}]]";
-
-      if (msg) {
-        alert("정상적으로 처리되었습니다");
-      }
 
       document
         .querySelector(".btn-outline-secondary")

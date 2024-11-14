@@ -129,4 +129,12 @@
       </ul>
     </nav>
   </div>
+  <th:block layout:fragment="script">
+    <script>
+      const msg = "[[${msg}]]";
+      if (msg) {
+        alert(msg);
+      }
+    </script>
+  </th:block>
 </html>
