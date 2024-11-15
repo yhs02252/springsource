@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{/layouts/layout}">
+  <div layout:fragment="content">
+    <form action="" method="post" id="modify">
+      <h2>Board Modify</h2>
+      <div class="mb-3">
+        <label for="bno">Board No.</label>
+        <input
+          type="text"
+          name="bno"
+          id="bno"
+          class="form-control"
+          th:value="${dto.bno}"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label for="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          class="form-control"
+          th:value="${dto.title}"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="content">Content</label>
+        <textarea
+          type="text"
+          name="content"
+          id="content"
+          class="form-control"
+          th:text="${dto.content}"
+        ></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="writer">writer 이름</label>
+        <input
+          type="text"
+          name="writer"
+          id="writer"
+          class="form-control"
+          th:value="${dto.writerName}"
+          readonly
+        />
+      </div>
+      <div class="mt-3">
+        <input type="hidden" name="writerEmail" th:value="${dto.writerEmail}" />
+        <button class="btn btn-outline-primary" type="submit">확인</button>
+        <button class="btn btn-outline-danger" type="button">삭제</button>
+        <button class="btn btn-outline-secondary secondary" type="button">
+          목록으로
+        </button>
+      </div>
+    </form>
+    <form action="" method="post" id="actionForm">
+      <input type="hidden" name="bno" th:value="${dto.bno}" />
+      <input type="hidden" name="page" th:value="${requestDTO.page}" />
+      <input type="hidden" name="size" th:value="${requestDTO.size}" />
+      <input type="hidden" name="type" th:value="${requestDTO.type}" />
+      <input type="hidden" name="keyword" th:value="${requestDTO.keyword}" />
+    </form>
+  </div>
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/modify.js}"></script>
+  </th:block>
+</html>

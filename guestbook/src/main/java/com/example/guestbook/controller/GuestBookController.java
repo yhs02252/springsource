@@ -32,6 +32,10 @@ public class GuestBookController {
 
     @GetMapping("/list")
     public void getList(@ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Model model) {
+        // @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO
+
+        // ==> "requestDTO" 라는 이름에 PageRequestDTO 요소값 parameter(파라미터)를 담겠다
+
         log.info("list 요청 {}", pageRequestDTO);
         // List<GuestBookDTO> list = service.getList(); // 기존방식
         PageResultDTO<GuestBookDTO, GuestBook> result = service.list(pageRequestDTO);

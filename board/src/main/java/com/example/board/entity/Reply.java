@@ -17,7 +17,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = "board")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -33,7 +33,7 @@ public class Reply extends BaseEntity {
     @Column(nullable = false)
     private String text;
 
-    // fetch type laze
+    // fetch type lazy
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 }
