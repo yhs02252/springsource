@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
+import javax.swing.border.Border;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 
 import com.example.board.entity.Board;
 import com.example.board.entity.Member;
@@ -145,9 +148,24 @@ public class BoardRepositoryTest {
     }
 
     @Test
+    @Commit
     @Transactional
     public void replyDeleteTest() {
         replyRepository.deleteByBno(1L);
         boardRepository.deleteById(1L);
+    }
+
+    @Test
+    public void replyDeleteTest2() {
+        // 부모 제거시 자식(Reply) 제거
+        boardRepository.deleteById(2L);
+    }
+
+    @Test
+    public void replyListTest() {
+        Board board = Board.builder().bno(10L).build();
+        List<Reply> list = replyRepository.findByBoardOrderByRno(board);
+
+        list.forEach(b -> System.out.println(b));
     }
 }

@@ -13,7 +13,9 @@ import com.example.board.dto.PageResultDTO;
 import com.example.board.entity.Board;
 import com.example.board.entity.Member;
 import com.example.board.repository.BoardRepository;
+import com.example.board.repository.ReplyRepository;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 
@@ -22,12 +24,13 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    public final ReplyRepository replyRepository;
     public final BoardRepository boardRepository;
 
     @Override
     public Long register(BoardDTO dto) {
 
-        return null;
+        return boardRepository.save(dtoToEntity(dto)).getBno();
     }
 
     @Override
@@ -61,8 +64,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional
     public void remove(Long bno) {
 
+        replyRepository.deleteByBno(bno);
         boardRepository.deleteById(bno);
     }
 

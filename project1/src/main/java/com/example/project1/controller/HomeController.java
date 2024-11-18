@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.project1.dto.LoginDTO;
 import com.example.project1.dto.SampleDTO;
@@ -64,6 +65,12 @@ public class HomeController {
         model.addAttribute("title", "This is just sample");
 
         return "index";
+    }
+
+    @ResponseBody
+    @GetMapping("/test")
+    public String getMethodName() {
+        return "반갑습니다";
     }
 
 }

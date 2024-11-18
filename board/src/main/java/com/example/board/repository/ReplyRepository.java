@@ -1,10 +1,13 @@
 package com.example.board.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
+import com.example.board.entity.Board;
 import com.example.board.entity.Reply;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long>, QuerydslPredicateExecutor<Reply> {
@@ -13,4 +16,7 @@ public interface ReplyRepository extends JpaRepository<Reply, Long>, QuerydslPre
     @Modifying // 데이터에 변화를 주는 구문을 실행 할 시 필요함
     @Query("DELETE FROM Reply r WHERE r.board.bno = :bno")
     void deleteByBno(Long bno);
+
+    // 특정 bno 댓글 추출
+    List<Reply> findByBoardOrderByRno(Board board);
 }
