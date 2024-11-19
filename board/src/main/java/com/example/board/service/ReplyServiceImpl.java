@@ -22,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Long register(ReplyDTO replyDTO) {
-        return null;
+        return replyRepository.save(dtoToEntity(replyDTO)).getRno();
     }
 
     @Override
@@ -35,16 +35,20 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public ReplyDTO read(Long rno) {
-        return null;
+        return entityToDto(replyRepository.findById(rno).get());
     }
 
     @Override
     public Long modify(ReplyDTO replyDTO) {
-        return null;
+        Reply reply = replyRepository.findById(replyDTO.getRno()).get();
+
+        reply.setText(replyDTO.getText());
+        return replyRepository.save(reply).getRno();
     }
 
     @Override
     public void remove(Long rno) {
+        replyRepository.deleteById(rno);
     }
 
 }
