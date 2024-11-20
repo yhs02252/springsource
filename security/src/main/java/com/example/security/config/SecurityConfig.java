@@ -12,6 +12,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @EnableWebSecurity // 웹에 적용할 security 클래스 포함
 @Configuration // 환경설정 파일 지정
@@ -21,10 +22,14 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/", "/sample/guest").permitAll() // 전체 나열할 경로를 permit
+                        .requestMatchers("/", "/sample/guest", "/auth").permitAll() // 전체 나열할 경로를 permit
                         .requestMatchers("/sample/member").hasRole("USER") // _<┓
                         .requestMatchers("/sample/admin").hasRole("ADMIN")) // <┛ 추가로 필요한 경로 권한 설정
-                .formLogin(Customizer.withDefaults());
+                // .formLogin(Customizer.withDefaults()); <- 시큐리티가 제공하는 로그인 페이지
+                .formLogin(login -> login.loginPage("/member/login").permitAll())
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                        .logoutSuccessUrl("/"));
 
         return http.build();
     }
@@ -41,6 +46,12 @@ public class SecurityConfig {
                 .password("{bcrypt}$2a$10$4vv.atapn1OXmz/3reIz5uImlh3NK5tqHEge7.w/Cbfv4vKkhlNwu")
                 .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(user);
+
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("{bcrypt}$2a$10$4vv.atapn1OXmz/3reIz5uImlh3NK5tqHEge7.w/Cbfv4vKkhlNwu")
+                .roles("ADMIN", "USER")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 }

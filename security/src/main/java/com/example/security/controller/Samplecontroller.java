@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Log4j2
 @RequestMapping("/sample")
 @Controller
-public class Samplecontroller {
+public class SampleController {
 
     @GetMapping("/guest")
     public void getGuest() {

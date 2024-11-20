@@ -6,6 +6,13 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>member</h1>
+    <h1>Member</h1>
+
+    <h3>[[${#authentication.name}]]</h3>
+    <h3 sec:authentication="name"></h3>
+
+    <h3>[[${#authentication.principal}]]</h3>
+
+    <a th:href="@{/member/logout}">로그아웃</a>
   </body>
 </html>
