@@ -42,10 +42,10 @@ public class ClubUserDetailsService implements UserDetailsService {
                 clubMember.getPassword(),
                 clubMember.isFromSocial(),
                 clubMember.getRoles().stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toList())); // User ClubAuthMemberDTO 생성자에 입력
 
-        clubAuthMemberDTO.setName(clubMember.getName());
-        clubAuthMemberDTO.setFromSocial(clubAuthMemberDTO.isFromSocial());
+        clubAuthMemberDTO.setName(clubMember.getName()); // DTO name에 입력
+        clubAuthMemberDTO.setFromSocial(clubAuthMemberDTO.isFromSocial()); // DTO fromSocial 입력
 
         return clubAuthMemberDTO;
     }
