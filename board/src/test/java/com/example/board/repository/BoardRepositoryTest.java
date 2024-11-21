@@ -14,10 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 
 import com.example.board.entity.Board;
 import com.example.board.entity.Member;
+import com.example.board.entity.MemberRole;
 import com.example.board.entity.Reply;
 
 import jakarta.transaction.Transactional;
@@ -34,6 +36,9 @@ public class BoardRepositoryTest {
     @Autowired
     private ReplyRepository replyRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Test
     public void memberInsertTest() {
         IntStream.rangeClosed(1, 30).forEach(i -> {
@@ -42,12 +47,17 @@ public class BoardRepositoryTest {
             Member member = Member.builder()
                     .email("email" + i + "@naver.com")
                     .name("user" + i)
-                    .password("pass" + num + i)
+                    .password(passwordEncoder.encode("1111"))
+                    .role(MemberRole.MEMBER)
                     .build();
 
             memberRepository.save(member);
         });
 
+    }
+
+    @Test
+    public void boardInsertTest() {
         LongStream.rangeClosed(1, 100).forEach(i -> {
 
             int num = (int) (Math.random() * 30) + 1;
@@ -62,10 +72,14 @@ public class BoardRepositoryTest {
             boardRepository.save(board);
         });
 
+    }
+
+    @Test
+    public void replyInsertTest() {
         LongStream.rangeClosed(1, 100).forEach(i -> {
             int num = (int) (Math.random() * 30) + 1;
-            int num2 = (int) (Math.random() * 100) + 1;
-            Board board = boardRepository.findById(i).get();
+            long num2 = (long) (Math.random() * 100) + 121;
+            Board board = boardRepository.findById(num2).get();
 
             Reply reply = Reply.builder()
                     .replyer("email" + num + "@naver.com")
@@ -74,6 +88,7 @@ public class BoardRepositoryTest {
                     .build();
             replyRepository.save(reply);
         });
+
     }
 
     @Test

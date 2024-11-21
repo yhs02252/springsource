@@ -7,10 +7,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.club.dto.ClubAuthMemberDTO;
+import com.example.club.dto.ClubMemberDTO;
 import com.example.club.entity.ClubMember;
+import com.example.club.entity.constant.ClubRole;
 import com.example.club.repository.ClubMemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +22,11 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 @Service
 @Log4j2
-public class ClubUserDetailsService implements UserDetailsService {
+public class ClubUserDetailsService implements UserDetailsService, ClubUserService {
 
     private final ClubMemberRepository clubMemberRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,6 +53,20 @@ public class ClubUserDetailsService implements UserDetailsService {
         clubAuthMemberDTO.setFromSocial(clubAuthMemberDTO.isFromSocial()); // DTO fromSocial 입력
 
         return clubAuthMemberDTO;
+    }
+
+    @Override
+    public String register(ClubMemberDTO dto) {
+
+        ClubMember clubMember = ClubMember.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .name(dto.getName())
+                .fromSocial(dto.isFromSocial())
+                .build();
+        clubMember.addMemberRole(ClubRole.USER);
+
+        return clubMemberRepository.save(clubMember).getEmail();
     }
 
 }
