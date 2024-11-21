@@ -17,7 +17,7 @@ import com.example.board.dto.MemberDTO;
 @RequestMapping("/member")
 public class MemberController {
 
-    @PreAuthorize("permitAll()")
+    // @PreAuthorize("permitAll()")
     @GetMapping("/login")
     public void getLogin() {
         log.info("로그인 페이지 요청");
