@@ -15,7 +15,8 @@ public class ReplyDTO {
 
     private Long rno;
 
-    private String replyer;
+    private String replyerEmail;
+    private String replyerName;
 
     private String text;
 

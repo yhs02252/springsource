@@ -80,9 +80,10 @@ public class BoardRepositoryTest {
             int num = (int) (Math.random() * 30) + 1;
             long num2 = (long) (Math.random() * 100) + 121;
             Board board = boardRepository.findById(num2).get();
+            Member member = memberRepository.findById("email" + num + "@naver.com").get();
 
             Reply reply = Reply.builder()
-                    .replyer("email" + num + "@naver.com")
+                    .replyer(member)
                     .text("randomtext" + num2)
                     .board(board)
                     .build();

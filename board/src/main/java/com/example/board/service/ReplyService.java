@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.board.dto.ReplyDTO;
 import com.example.board.entity.Board;
+import com.example.board.entity.Member;
 import com.example.board.entity.Reply;
 
 public interface ReplyService {
@@ -20,9 +21,10 @@ public interface ReplyService {
 
     public default Reply dtoToEntity(ReplyDTO replyDTO) {
         Board board = Board.builder().bno(replyDTO.getBno()).build();
+        Member member = Member.builder().email(replyDTO.getReplyerEmail()).build();
         return Reply.builder()
                 .rno(replyDTO.getRno())
-                .replyer(replyDTO.getReplyer())
+                .replyer(member)
                 .text(replyDTO.getText())
                 .board(board)
                 .build();
@@ -31,7 +33,8 @@ public interface ReplyService {
     public default ReplyDTO entityToDto(Reply reply) {
         return ReplyDTO.builder()
                 .rno(reply.getRno())
-                .replyer(reply.getReplyer())
+                .replyerEmail(reply.getReplyer().getEmail())
+                .replyerName(reply.getReplyer().getName())
                 .text(reply.getText())
                 .bno(reply.getBoard().getBno())
                 .regDate(reply.getCreatedDateTime())

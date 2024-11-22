@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -46,8 +47,10 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("authentication.name == #dto.writerEmail")
     @PostMapping("/modify")
-    public String postMethodName(BoardDTO dto, PageRequestDTO requestDTO, RedirectAttributes rttr) {
+    public String postMethodName(BoardDTO dto, @ModelAttribute("requestDTO") PageRequestDTO requestDTO,
+            RedirectAttributes rttr) {
 
         Long bno = boardService.update(dto);
 
@@ -59,8 +62,10 @@ public class BoardController {
         return "redirect:read";
     }
 
+    @PreAuthorize("authentication.name == #writerEmail")
     @PostMapping("/remove")
-    public String postMethodName(@RequestParam Long bno, PageRequestDTO requestDTO, RedirectAttributes rttr) {
+    public String postMethodName(Long bno, String writerEmail, @ModelAttribute("requestDTO") PageRequestDTO requestDTO,
+            RedirectAttributes rttr) {
         log.info("bno 확인 : {}", bno);
         log.info("requestDTO 확인 : {}", requestDTO);
 
@@ -71,9 +76,10 @@ public class BoardController {
         rttr.addAttribute("type", requestDTO.getType());
         rttr.addAttribute("keyword", requestDTO.getKeyword());
 
-        return "redirect:list";
+        return "redirect:/board/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/create")
     public void getMethodName(@ModelAttribute("dto") BoardDTO dto,
             @ModelAttribute("requestDTO") PageRequestDTO requestDTO) {
@@ -81,6 +87,7 @@ public class BoardController {
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create")
     public String postMethodName(@Valid @ModelAttribute("dto") BoardDTO dto, BindingResult result,
             @ModelAttribute("requestDTO") PageRequestDTO requestDTO,

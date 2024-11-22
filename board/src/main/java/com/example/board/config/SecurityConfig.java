@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices.RememberMeTokenAlgorithm;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -24,9 +26,13 @@ public class SecurityConfig {
         // static 아래 폴더, 필터 무조건 통과 => 컨트롤러에서 접근 제한 설정
         http.authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/img/*", "/css/*", "/js/*", "/assets/*").permitAll()
+                .requestMatchers("/board/modify").hasAnyRole("MEMBER", "ADMIN")
                 .anyRequest().permitAll());
 
         http.formLogin(login -> login.loginPage("/member/login").permitAll());
+
+        http.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
+                .logoutSuccessUrl("/"));
 
         return http.build();
     }

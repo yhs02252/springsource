@@ -28,8 +28,10 @@ public class Reply extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reply_seq_gen")
     @Id
     private Long rno;
-    @Column(nullable = false)
-    private String replyer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member replyer;
+
     @Column(nullable = false)
     private String text;
 
