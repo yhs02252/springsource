@@ -108,7 +108,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
         sort.stream().forEach(order -> {
             Order direction = order.isAscending() ? Order.ASC : Order.DESC; // 방향 정하기
 
-            String prop = order.getProperty(); //
+            String prop = order.getProperty(); // Sort 기준 컬럼명 가져오기
 
             // order by 를 어느 entity에 적용할 지 결정
             PathBuilder<Board> orderByExpression = new PathBuilder<>(Board.class, "board");
@@ -120,6 +120,7 @@ public class SearchBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         List<Tuple> result = tuple.fetch();
 
+        // 전체 행 개수
         Long count = tuple.fetchCount();
 
         return new PageImpl<>(result.stream().map(t -> t.toArray()).collect(Collectors.toList()), pageable, count);
