@@ -1,5 +1,9 @@
 package com.example.movie.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +20,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
+@ToString(exclude = { "movieImages", "reviews" })
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -31,5 +35,16 @@ public class Movie extends BaseEntity {
 
     @Column(nullable = false)
     private String title;
+
+    // 자식 연관관계 추가(양방향)
+    // @Builder.Default
+    // @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
+    // // 객체 movie 를 기준으로 요소를 지울때 같이 지워지도록 연동
+    // List<MovieImage> movieImages = new ArrayList<>();
+
+    // @Builder.Default
+    // @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
+    // // 객체 movie 를 기준으로 요소를 지울때 같이 지워지도록 연동
+    // List<Review> reviews = new ArrayList<>();
 
 }

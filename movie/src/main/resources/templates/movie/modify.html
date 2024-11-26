@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{/layouts/layout}">
+  <div layout:fragment="content">
+    <div class="container px-6 mx-auto grid">
+      <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
+        Movie 정보
+      </h2>
+      <div
+        class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+      >
+        <form th:action="@{modify}" method="post" id="modifyFrom">
+          <input type="hidden" name="mno" th:value="${movieDTO.mno}" />
+          <label class="block text-sm mt-4">
+            <span class="text-gray-700 dark:text-gray-400">제목</span>
+            <input
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="제목"
+              th:value="${movieDTO.title}"
+            />
+          </label>
+          <label class="block text-sm mt-4">
+            <span class="text-gray-700 dark:text-gray-400">등록일</span>
+            <input
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="등록일"
+              th:value="${#temporals.format(movieDTO.regDate, 'yyyy년 MM월 dd일 HH:mm')}"
+              readonly
+            />
+          </label>
+          <label class="block text-sm mt-4">
+            <span class="text-gray-700 dark:text-gray-400">평균 평점</span>
+            <input
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="평균 평점"
+              th:value="${movieDTO.reviewAvg}"
+            />
+          </label>
+          <div class="mt-4">
+            <button
+              class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-purple modify"
+            >
+              수정완료
+            </button>
+            <button
+              class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-red-500 focus:outline-none focus:shadow-outline-purple remove"
+            >
+              삭제
+            </button>
+            <button
+              type="button"
+              class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-gray-700 focus:outline-none focus:shadow-outline-purple toList"
+            >
+              목록
+            </button>
+          </div>
+        </form>
+        <!-- 영화이미지 영역 -->
+        <div class="mt-4 text-white">
+          <ul>
+            <li th:each="movieImage : ${movieDTO.movieImageDTOs}">
+              <img src="" alt="" class="block" />
+              <영화 이미지 나올 곳>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 리뷰 영역 -->
+
+        <!-- 리뷰 폼 -->
+      </div>
+    </div>
+  </div>
+  <th:block layout:fragment="script">
+    <script th:src="@{/js/modify.js}">
+      const page = "[[${requestDTO.page}]]";
+      const size = "[[${requestDTO.size}]]";
+      const type = "[[${requestDTO.type}]]";
+      const keyword = "[[${requestDTO.keyword}]]";
+    </script>
+  </th:block>
+</html>

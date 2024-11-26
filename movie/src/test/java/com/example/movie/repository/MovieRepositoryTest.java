@@ -11,12 +11,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import com.example.movie.entity.Member;
 import com.example.movie.entity.Movie;
 import com.example.movie.entity.MovieImage;
 import com.example.movie.entity.Review;
 import com.example.movie.entity.constant.MemberRole;
+
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 public class MovieRepositoryTest {
@@ -110,5 +113,26 @@ public class MovieRepositoryTest {
         for (Object[] objects : result) {
             System.out.println(Arrays.toString(objects));
         }
+    }
+
+    @Test
+    @Transactional
+    public void testRemove() {
+        // movieRepository.deleteById(50L);
+        // 무결성 제약조건(C##MOVIEUSER.FKNIAHH54OB7EQVII88B71D0RP7)이 위배되었습니다- 자식 레코드가 발견되었습니다
+        Movie movie = Movie.builder().mno(50L).build();
+
+        movieImageRepository.deleteByMovie(movie);
+        reviewRepository.deleteByMovie(movie);
+        movieRepository.delete(movie);
+    }
+
+    @Commit
+    @Test
+    @Transactional
+    public void testRemove2() {
+        Movie movie = movieRepository.findById(49L).get();
+
+        movieRepository.delete(movie);
     }
 }

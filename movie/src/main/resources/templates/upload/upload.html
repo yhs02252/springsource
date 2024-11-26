@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input
+      type="file"
+      name="uploadFiles"
+      id=""
+      multiple
+      accept="image/png, image/jpeg"
+    />
+    <button id="uploadBtn">업로드</button>
+    <div></div>
+    <script>
+      // 업로드버튼을 누를 시 서버로 File 전송 스크립트 작성
+      document.querySelector("#uploadBtn").addEventListener("click", () => {
+        const uploadFiles = document.querySelector("[name='uploadFiles']");
+        const files = uploadFiles.files;
+        console.log("파일 확인 : " + files);
+        console.log(files);
+
+        // 스크립트에서 form 작성하기
+        let formData = new FormData();
+        for (let index = 0; index < files.length; index++) {
+          formData.append("uploadFiles", files[index]);
+          console.log("인덱스 파일 확인 : " + files[index]);
+          console.log(files[index]);
+          // upload된 파일들을 key value 형식으로 담기
+        }
+
+        for (const element of formData.keys()) {
+          console.log("key값 확인 : " + element);
+          console.log(element);
+        }
+
+        for (const element of formData.values()) {
+          console.log("value값 확인 : " + element);
+          console.log(element);
+        }
+
+        // formData 서버로 전송(ajax)
+        fetch("/upload/upload", {
+          method: "post",
+          body: formData,
+        })
+          .then((response) => response.json)
+          .then((data) => {
+            console.log("data 확인 : " + data);
+            console.log(data);
+          });
+      });
+    </script>
+  </body>
+</html>
