@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.movie.dto.MovieDTO;
+import com.example.movie.dto.MovieImageDTO;
 import com.example.movie.entity.Member;
 import com.example.movie.entity.Movie;
 import com.example.movie.entity.MovieImage;
@@ -92,5 +94,13 @@ public class MovieImageRepositoryTest {
         }
         System.out.println("Review 카운트 : " + result.get(0)[2]);
         System.out.println("Review 평점 : " + result.get(0)[3]);
+    }
+
+    @Test
+    public void testImage() {
+        MovieDTO movieDTO = new MovieDTO();
+
+        movieDTO.getMovieImageDTOs().size();
+        movieDTO.getMovieImageDTOs().get(0).getPath();
     }
 }

@@ -3,7 +3,10 @@ package com.example.movie.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -67,6 +70,8 @@ public class MovieServiceImpl implements MovieService {
          * 이러한 이유 때문에 Arrays.asList()로 만든 List에 새로운 원소를 추가하거나 삭제 할 수 없다.
          * 
          * Arrays.asList()는 배열의 내용을 수정하려고 할 때 List로 바꿔서 편리하게 사용하기 위함.
+         * 
+         * 여러개 또는 하나의 값이 들어올때 각각의 요소들을 배열처리 해주는 기능 가능
          */
 
         return new PageResultDTO<>(result, function);
@@ -74,8 +79,16 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Long register(MovieDTO movieDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'register'");
+
+        Map<String, Object> entityMap = dtoToEntity(movieDTO);
+
+        Movie movie = (Movie) entityMap.get("movie");
+        List<MovieImage> movieImages = (List<MovieImage>) entityMap.get("movieImages");
+
+        movieRepository.save(movie);
+        movieImages.forEach(images -> movieImageRepository.save(images));
+
+        return movie.getMno();
     }
 
     @Override

@@ -14,7 +14,7 @@ public class MovieServiceTest {
 
     @Test
     public void testGet() {
-        MovieDTO movieDTO = movieService.get(1L);
+        MovieDTO movieDTO = movieService.get(52L);
         System.out.println(movieDTO);
     }
 }
