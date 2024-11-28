@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{/layouts/layout}">
+  <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/upload.css}">
+  </th:block>
   <div layout:fragment="content">
     <div class="container px-6 mx-auto grid">
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         Movie 수정
       </h2>
       <div
-        class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+        class="px-4 py-3 mb-8 bg-gray-800 rounded-lg shadow-md dark:bg-gray-800"
       >
-        <form th:action="@{modify}" method="post" id="modifyFrom">
+        <form th:action="@{modify}" method="post" id="createForm">
           <input type="hidden" name="mno" th:value="${movieDTO.mno}" />
           <label class="block text-sm mt-4">
             <span class="text-gray-700 dark:text-gray-400">제목</span>
             <input
+            name="title"
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="제목"
               th:value="${movieDTO.title}"
@@ -35,6 +39,16 @@
               th:value="${movieDTO.reviewAvg}"
             />
           </label>
+          <label class="block text-sm mt-4">
+            <span class="text-gray-700 dark:text-gray-400">Image Files</span>
+            <input
+              type="file"
+              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+              placeholder="포스터"
+              multiple
+              accept="image/png, image/jpeg"
+            />
+          </label>
           <div class="mt-4">
             <button
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-purple modify"
@@ -42,6 +56,7 @@
               수정완료
             </button>
             <button
+            type="button"
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-red-500 focus:outline-none focus:shadow-outline-purple remove"
             >
               삭제
@@ -55,27 +70,49 @@
           </div>
         </form>
         <!-- 영화이미지 영역 -->
-        <div class="mt-4 text-white">
-          <ul>
-            <li th:each="movieImage : ${movieDTO.movieImageDTOs}">
-              <img src="" alt="" class="block" />
-              <영화 이미지 나올 곳>
+        <div class="uploadResult mt-4 text-white">
+          <포스터 이미지>
+          <ul
+            class="block mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray"
+          >
+            <li
+              th:each="movieImage : ${movieDTO.movieImageDTOs}"
+              th:attr="data-file=${movieImage.getImageURL()}, data-name=${movieImage.getImgName()}, data-path=${movieImage.getPath()}, data-uuid=${movieImage.getUuid()}"
+              data-bs-toggle="modal"
+              data-bs-target="#imgModal"
+            >
+              <img
+                th:src="|/upload/display?fileName=${movieImage.getImageURL()}|"
+                th:if="${movieImage.path != null}"
+                alt=""
+                class="block"
+              />
+              <span class="text-sm d-inline-block mx-1" th:text="${movieImage.imgName}"></span>
+                <a href="#"><i class="fa-solid fa-xmark"></i></a>
+              <br />
             </li>
           </ul>
         </div>
-
         <!-- 리뷰 영역 -->
-
+        
         <!-- 리뷰 폼 -->
       </div>
     </div>
+      <form action="" method="post" id="actionForm">
+        <input type="hidden" name="mno" th:value="${movieDTO.mno}">
+        <input type="hidden" name="page" th:value="${requestDTO.page}">
+        <input type="hidden" name="size" th:value="${requestDTO.size}">
+        <input type="hidden" name="type" th:value="${requestDTO.type}">
+        <input type="hidden" name="keyword" th:value="${requestDTO.keyword}">
+      </form>
   </div>
   <th:block layout:fragment="script">
-    <script th:src="@{/js/modify.js}">
-      const page = "[[${requestDTO.page}]]";
-      const size = "[[${requestDTO.size}]]";
-      const type = "[[${requestDTO.type}]]";
-      const keyword = "[[${requestDTO.keyword}]]";
+    <script>
+      // 영화명
+      const title = '[[${movieDTO.title}]]';
     </script>
+    <script th:src="@{/js/modify.js}"></script>
+    <script th:src="@{/js/read.js}"></script>
+    <script th:src="@{/js/upload.js}"></script>
   </th:block>
 </html>

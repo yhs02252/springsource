@@ -25,7 +25,7 @@ public class ReviewDTO {
 
     private String memberEmail;
 
-    private String nickname;
+    private String memberNickname;
 
     private LocalDateTime regDate;
 

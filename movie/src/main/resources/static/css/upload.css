@@ -1,6 +1,7 @@
 .uploadResult {
   width: 100%;
-  background-color: aliceblue;
+  background-color: rgb(26, 28, 35);
+  /* background-color: rgb(206, 201, 201); */
   margin-top: 20px;
 }
 .uploadResult ul {
@@ -15,6 +16,7 @@
   list-style: none;
   padding: 10px;
   margin-left: 2em;
+  cursor: pointer;
 }
 
 .uploadResult ul li img {

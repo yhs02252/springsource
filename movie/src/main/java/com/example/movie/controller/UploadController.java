@@ -6,6 +6,7 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.dgc.VMID;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -71,23 +72,53 @@ public class UploadController {
             String saveFolderPath = makeFolder(); // YYYY/MM/dd
             System.out.println("파일 디렉토리 확인 : " + saveFolderPath);
 
+            String realUploadPath = uploadPath + File.separator + saveFolderPath;
+
             // UUID - 중복파일 처리
             String uuid = UUID.randomUUID().toString();
             // upload/2024/11/26/fdc0b7fa-f501-4e08-abfb-8808ff29415e_1.jpg
-            String saveName = uploadPath + File.separator + saveFolderPath + File.separator + uuid + "_" + originName;
+            String saveName = realUploadPath + File.separator + uuid + "_" + originName;
+            String backupName = realUploadPath + File.separator + "backupFolder"
+                    + File.separator + uuid + "_" + originName;
 
-            Path savePath = Paths.get(saveName);
+            File currentDir = new File(uploadPath, saveFolderPath);
+            File allFile[] = currentDir.listFiles();
+
+            Path savePath = null;
+
+            for (File f : allFile) {
+                if (f.getName().equals(multipartFile.getOriginalFilename())) {
+                    savePath = Paths.get(backupName);
+                } else {
+                    savePath = Paths.get(saveName);
+                }
+            }
+
+            Path pathFinder = Paths.get(saveName);
 
             try {
                 // 폴더에 저장
-                multipartFile.transferTo(savePath);
+                if (savePath == pathFinder) {
 
-                // 썸네일 저장
-                String thumbSaveName = uploadPath + File.separator + saveFolderPath + File.separator + "s_" + uuid + "_"
-                        + originName;
-                File thumbFile = new File(thumbSaveName);
+                    multipartFile.transferTo(savePath);
 
-                Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
+                    // 썸네일 저장
+                    String thumbSaveName = realUploadPath + File.separator + "s_" + uuid + "_"
+                            + originName;
+                    File thumbFile = new File(thumbSaveName);
+
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
+                } else {
+                    multipartFile.transferTo(savePath);
+
+                    // 썸네일 저장
+                    String thumbSaveName = realUploadPath + File.separator + "backupFolder" + File.separator + "s_"
+                            + uuid + "_"
+                            + originName;
+                    File thumbFile = new File(thumbSaveName);
+
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -100,14 +131,22 @@ public class UploadController {
     }
 
     @GetMapping("/display")
-    public ResponseEntity<byte[]> getFile(String fileName) {
+    public ResponseEntity<byte[]> getFile(String fileName, String size) {
         ResponseEntity<byte[]> result = null;
 
         try {
+            // 2024/2F11/2F28/5C/s_be0687c2-65bc-4ad9-b8f6-30d208e688bc_oppen3.jpg <=
             String srcFileName = URLDecoder.decode(fileName, "utf-8");
+            // upload/2024/2F11/2F28/5C/s_be0687c2-65bc-4ad9-b8f6-30d208e688bc_oppen3.jpg <=
             File file = new File(uploadPath + File.separator + srcFileName);
 
+            if (size != null && size.equals("1")) {
+                // upload/2024/2F11/2F28/5C/원본파일명 <=
+                file = new File(file.getParent(), file.getName().substring(2));
+            }
+
             HttpHeaders headers = new HttpHeaders();
+            // Content-type : image/png or text/html
             headers.add("Content-Type", Files.probeContentType(file.toPath()));
             result = new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
         } catch (Exception e) {
@@ -151,11 +190,16 @@ public class UploadController {
 
         // 날짜 형태(/ / /)로 폴더 생성을 위해 날짜 format 시키기
         String dateStr = today.format(DateTimeFormatter.ofPattern("YYYY/MM/dd"));
-
+        String backup = "backupFolder";
         // 부모(지정한 경로), 자식 폴더(포맷한 날짜) 이용하여 생성
         File dirs = new File(uploadPath, dateStr);
+        File backupDirs = new File(dirs, backup);
         if (!dirs.exists()) {
             dirs.mkdirs(); // 실제 폴더 생성(지정한 폴더의 모든 경로)
+        }
+
+        if (!backupDirs.exists()) {
+            backupDirs.mkdirs();
         }
 
         // 폴더구조 : / or \\

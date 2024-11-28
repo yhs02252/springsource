@@ -1,5 +1,6 @@
 package com.example.movie.repository;
 
+import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.example.movie.entity.Member;
 import com.example.movie.entity.Movie;
 import com.example.movie.entity.Review;
+
+import jakarta.transaction.Transactional;
 
 @SpringBootTest
 public class ReviewRepositoryTest {
@@ -40,6 +43,19 @@ public class ReviewRepositoryTest {
                     .member(member)
                     .build();
             reviewRepository.save(review);
+        });
+    }
+
+    @Test
+    public void testReviewFformovie() {
+        Movie movie = movieRepository.findById(41L).get();
+        List<Review> reviews = reviewRepository.findByMovie(movie);
+        // System.out.println(reviews);
+
+        reviews.forEach(review -> {
+            System.out.println(review.getGrade());
+            System.out.println(review.getText());
+            System.out.println(review.getMember().getNickName());
         });
     }
 }

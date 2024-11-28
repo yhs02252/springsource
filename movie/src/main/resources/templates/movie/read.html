@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html lang="en" layout:decorate="~{/layouts/layout}">
+  <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/upload.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/starrr.css}">
+  </th:block>
   <div layout:fragment="content">
     <div class="container px-6 mx-auto grid">
       <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
         Movie 정보
       </h2>
       <div
-        class="px-4 py-3 mb-8 bg-white rounded-lg shadow-md dark:bg-gray-800"
+        class="px-4 py-3 mb-8 bg-gray-800 rounded-lg shadow-md dark:bg-gray-800"
       >
         <form action="" method="post">
+          <input type="hidden" name="mno" th:value="${movieDTO.mno}" />
           <label class="block text-sm mt-4">
             <span class="text-gray-700 dark:text-gray-400">제목</span>
             <input
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-              placeholder="제목"
-              th:value="${movieDTO.title}"
-              readonly
+            name="title"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            placeholder="제목"
+            th:value="${movieDTO.title}"
+            readonly
             />
           </label>
           <label class="block text-sm mt-4">
             <span class="text-gray-700 dark:text-gray-400">등록일</span>
             <input
-              class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            name="regDate"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="리뷰 수"
               th:value="${#temporals.format(movieDTO.regDate, 'yyyy년 MM월 dd일 HH:mm')}"
               readonly
@@ -39,6 +46,7 @@
           <label class="block text-sm mt-4">
             <span class="text-gray-700 dark:text-gray-400">평균 평점</span>
             <input
+            name="reviewAvg"
               class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
               placeholder="평균 평점"
               th:value="${movieDTO.reviewAvg}"
@@ -61,31 +69,104 @@
           </div>
         </form>
         <!-- 영화이미지 영역 -->
-        <div class="mt-4 text-white">
-          <ul>
-            <li th:each="movieImage : ${movieDTO.movieImageDTOs}">
-              <img src="" alt="" class="block" />
-              <영화 이미지 나올 곳>
+        <div class="uploadResult mt-4 text-white">
+          <포스터 이미지>
+          <ul class="block mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
+            <li th:each="movieImage : ${movieDTO.movieImageDTOs}"
+            th:attr="data-file=${movieImage.getImageURL()}, data-name=${movieImage.getImgName()}, data-path=${movieImage.getPath()}, data-uuid=${movieImage.getUuid()}">
+              <img
+              th:attr="data-file=${movieImage.getImageURL()}" data-bs-toggle="modal" data-bs-target="#imgModal"
+                th:src="|/upload/display?fileName=${movieImage.getImageURL()}|"
+                th:if="${movieImage.path != null}"
+                alt=""
+                class="block"
+              />
+              <br>
             </li>
           </ul>
         </div>
 
-        <!-- 리뷰 영역 -->
         <div class="mt-4 text-white">
           <리뷰 영역>
           <label class="block text-sm mt-4">
             <span class="text-gray-700 dark:text-gray-400">리뷰 수</span>
             <input
-              class="block mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-              placeholder="리뷰 수"
-              th:value="${movieDTO.reviewCnt}"
-              readonly
+            name="reviewCnt"
+            class="block mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            placeholder="리뷰 수"
+            th:value="${movieDTO.reviewCnt}"
+            readonly
             />
           </label>
         </div>
-
+        
+        <div class="mt-4">
+          <a
+          class="flex items-center justify-between p-4 mb-8 text-sm font-semibold text-purple-100 bg-purple-600 rounded-lg shadow-md focus:outline-none focus:shadow-outline-purple"
+          href="https://github.com/estevanmaito/windmill-dashboard"
+        >
+          <div class="flex items-center">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              ></path>
+            </svg>
+            <span>리뷰 작성 [ <span class="review-cnt"></span> ]</span>
+          </div>
+          <span>View more &RightArrow;</span>
+        </a>
+        </div>
+        
         <!-- 리뷰 폼 -->
+         <form action="" method="post" id="reviewForm">
+          <input type="hidden" name="reviewNo" value="">
+          <input type="hidden" name="memberEmail" value="">
+          <label class="block text-sm mt-2">
+            <span class="text-gray-700 dark:text-gray-400">작성자</span>
+            <input
+            name="nickname"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            placeholder="작성자"
+            />
+          </label>
+          <label class="block text-sm mt-2">
+            <span class="text-gray-700 dark:text-gray-400">내용</span>
+            <textarea
+            name="text"
+            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+            placeholder="영화 리뷰 등록"
+            ></textarea>
+          </label>
+          <label class="block text-sm mt-2">
+            <span class="text-gray-700 dark:text-gray-400">평점</span>
+            <div class='starrr'></div>
+          </label>
+          <div class="flex mt-6 text-sm">
+            <button type="button" class="btn btn-outline-danger btn-sm" style="--bs-btn-padding-y:0.5rem;--bs-btn-padding-x:1.5rem">리뷰 등록</button>
+          </div>
+         </form>
+        <!-- 리뷰 영역 -->
+        
       </div>
     </div>
   </div>
+  <th:block layout:fragment="script">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script th:src="@{/assets/js/starrr.js}"></script>
+    <script>
+      // 영화명
+      const title = '[[${movieDTO.title}]]';
+      const mno = '[[${movieDTO.mno}]]'
+
+      let grade = 0
+      $('.starrr').starrr({
+        rating: grade,
+        change: function(e, value){
+        console.log('new rating is ' + value)
+        grade = value
+       }
+      })
+    </script>
+    <script th:src="@{/js/read.js}"></script>
+  </th:block>
 </html>
