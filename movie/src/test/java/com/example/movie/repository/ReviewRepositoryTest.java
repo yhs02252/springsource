@@ -58,4 +58,9 @@ public class ReviewRepositoryTest {
             System.out.println(review.getMember().getNickName());
         });
     }
+
+    @Test
+    public void testReviewRemove() {
+        reviewRepository.deleteById(100L);
+    }
 }

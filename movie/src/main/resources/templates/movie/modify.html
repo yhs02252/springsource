@@ -78,10 +78,11 @@
             <li
               th:each="movieImage : ${movieDTO.movieImageDTOs}"
               th:attr="data-file=${movieImage.getImageURL()}, data-name=${movieImage.getImgName()}, data-path=${movieImage.getPath()}, data-uuid=${movieImage.getUuid()}"
-              data-bs-toggle="modal"
-              data-bs-target="#imgModal"
-            >
+              >
               <img
+                data-bs-toggle="modal"
+                data-bs-target="#imgModal"
+                th:attr="data-file=${movieImage.getImageURL()}"
                 th:src="|/upload/display?fileName=${movieImage.getImageURL()}|"
                 th:if="${movieImage.path != null}"
                 alt=""
@@ -110,6 +111,7 @@
     <script>
       // 영화명
       const title = '[[${movieDTO.title}]]';
+      const mno = '[[${movieDTO.mno}]]'
     </script>
     <script th:src="@{/js/modify.js}"></script>
     <script th:src="@{/js/read.js}"></script>

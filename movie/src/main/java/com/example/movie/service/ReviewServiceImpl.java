@@ -36,26 +36,28 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewDTO getReview(Long reviewNo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getReview'");
+        return entityToDto(reviewRepository.findById(reviewNo).get());
     }
 
     @Override
     public Long addReview(ReviewDTO reviewDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addReview'");
+        Review review = dtoToEntity(reviewDTO);
+
+        return reviewRepository.save(review).getReviewNo();
     }
 
     @Override
     public Long modifyReview(ReviewDTO reviewDTO) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'modifyReview'");
+        Review review = reviewRepository.findById(reviewDTO.getReviewNo()).get();
+
+        review.setText(reviewDTO.getText());
+        review.setGrade(reviewDTO.getGrade());
+        return reviewRepository.save(review).getReviewNo();
     }
 
     @Override
     public void removeReview(Long reviewNo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeReview'");
+        reviewRepository.deleteById(reviewNo);
     }
 
 }

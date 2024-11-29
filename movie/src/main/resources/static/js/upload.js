@@ -9,7 +9,7 @@ function showUploadImage(files) {
   files.forEach((file) => {
     tags += `<li data-name="${file.fileName}" data-path="${file.folderPath}" data-uuid="${file.uuid}">`;
     tags += `<div>`;
-    tags += `<a href=""><img src="/upload/display?fileName=${file.thumbImageURL}" class="block"/></a>`;
+    tags += `<a href=""><img src="/upload/display?fileName=${file.imageURL}" class="block"/></a>`;
     tags += `<span class="text-sm d-inline-block mx-1">${file.fileName}</span>`;
     tags += `<a href="${file.imageURL}" data-file=""><i class="fa-solid fa-xmark"></i></a>`;
     tags += `</div>`;

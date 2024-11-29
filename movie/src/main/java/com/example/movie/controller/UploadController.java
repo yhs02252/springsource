@@ -70,52 +70,69 @@ public class UploadController {
 
             // 파일 저장 코드 작성
             String saveFolderPath = makeFolder(); // YYYY/MM/dd
+            String saveBackupFolderPath = makeFolder() + File.separator + "backupFolder";
             System.out.println("파일 디렉토리 확인 : " + saveFolderPath);
 
             String realUploadPath = uploadPath + File.separator + saveFolderPath;
+            String realUploadBackupPath = uploadPath + File.separator + saveFolderPath + File.separator
+                    + "backupFolder";
 
             // UUID - 중복파일 처리
             String uuid = UUID.randomUUID().toString();
             // upload/2024/11/26/fdc0b7fa-f501-4e08-abfb-8808ff29415e_1.jpg
             String saveName = realUploadPath + File.separator + uuid + "_" + originName;
-            String backupName = realUploadPath + File.separator + "backupFolder"
-                    + File.separator + uuid + "_" + originName;
+            String backupName = realUploadBackupPath + File.separator + uuid + "_" + originName;
 
             File currentDir = new File(uploadPath, saveFolderPath);
             File allFile[] = currentDir.listFiles();
 
-            Path savePath = null;
+            Path savePath = Paths.get(saveName);
 
             for (File f : allFile) {
-                if (f.getName().equals(multipartFile.getOriginalFilename())) {
+                if (f.getName().contains(multipartFile.getOriginalFilename())) {
+                    System.out.println("f 이름 : " + f.getName());
+                    System.out.println("multi 이름 : " + multipartFile.getOriginalFilename());
                     savePath = Paths.get(backupName);
-                } else {
-                    savePath = Paths.get(saveName);
+                    System.out.println("f 비교 savePath 이름 : " + savePath);
+                    break;
                 }
             }
 
-            Path pathFinder = Paths.get(saveName);
+            System.out.println("===============경로 확인 : " + savePath);
+
+            Path pathFinder = Paths.get(backupName);
+
+            System.out.println("===============경로 확인2 : " + pathFinder);
 
             try {
-                // 폴더에 저장
-                if (savePath == pathFinder) {
 
-                    multipartFile.transferTo(savePath);
+                // 폴더에 저장
+                multipartFile.transferTo(savePath);
+
+                // 썸네일 저장
+                if (savePath != pathFinder) {
+                    System.out.println("결과물" + savePath);
+                    System.out.println("결과물 finder" + pathFinder);
+
+                    String thumbSaveName = realUploadBackupPath + File.separator + "s_"
+                            + uuid + "_"
+                            + originName;
+                    System.out.println("썸네일 경로 이름" + thumbSaveName);
+                    File thumbFile = new File(thumbSaveName);
+                    System.out.println("썸네일 파일" + thumbFile);
+
+                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
+
+                } else if (savePath == pathFinder) {
+                    System.out.println("결과물" + savePath);
+                    System.out.println("결과물 finder" + pathFinder);
 
                     // 썸네일 저장
                     String thumbSaveName = realUploadPath + File.separator + "s_" + uuid + "_"
                             + originName;
+                    System.out.println("썸네일 경로 이름" + thumbSaveName);
                     File thumbFile = new File(thumbSaveName);
-
-                    Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
-                } else {
-                    multipartFile.transferTo(savePath);
-
-                    // 썸네일 저장
-                    String thumbSaveName = realUploadPath + File.separator + "backupFolder" + File.separator + "s_"
-                            + uuid + "_"
-                            + originName;
-                    File thumbFile = new File(thumbSaveName);
+                    System.out.println("썸네일 파일" + thumbFile);
 
                     Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
                 }
@@ -124,7 +141,11 @@ public class UploadController {
                 e.printStackTrace();
             }
 
-            uploadResultDTOs.add((new UploadResultDTO(uuid, originName, saveFolderPath)));
+            if (savePath != pathFinder) {
+                uploadResultDTOs.add((new UploadResultDTO(uuid, originName, saveFolderPath)));
+            } else {
+                uploadResultDTOs.add((new UploadResultDTO(uuid, originName, saveBackupFolderPath)));
+            }
         }
 
         return new ResponseEntity<List<UploadResultDTO>>(uploadResultDTOs, HttpStatus.OK);
