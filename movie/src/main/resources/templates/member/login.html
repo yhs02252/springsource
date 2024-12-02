@@ -47,6 +47,9 @@
                 name="password"
               />
             </label>
+            <div th:if="${param.error}" class="mt-4 alert alert-danger">
+              이메일 혹은 비밀번호를 확인해 주세요
+            </div>
             <!-- You should use a button here, as the anchor is only used for the example  -->
             <button
                 type="submit"
@@ -56,7 +59,7 @@
             </button>
         </form>
 
-            <hr class="my-8" />
+            <hr class="my-6" />
 
             <button
               class="flex items-center justify-center w-full px-4 py-2 text-sm font-medium leading-5 text-white text-gray-700 transition-colors duration-150 border border-gray-300 rounded-lg dark:text-gray-400 active:bg-transparent hover:border-gray-500 focus:border-gray-500 active:text-gray-500 focus:outline-none focus:shadow-outline-gray"

@@ -543,6 +543,11 @@ video {
   background-color: #000;
   background-color: rgba(0, 0, 0, var(--bg-opacity));
 }
+.bg-black-600 {
+  --bg-opacity: 1;
+  background-color: rgb(43, 43, 43);
+  background-color: rgba(43, 43, 43, var(--bg-opacity));
+}
 .bg-gray-50 {
   --bg-opacity: 1;
   background-color: #f9fafb;
@@ -655,6 +660,11 @@ video {
   --bg-opacity: 1;
   background-color: #7e3af2;
   background-color: rgba(126, 58, 242, var(--bg-opacity));
+}
+.active\:bg-blue-600:active {
+  --bg-opacity: 1;
+  background-color: rgb(13, 110, 253);
+  background-color: rgba(13, 110, 253, var(--bg-opacity));
 }
 .active\:bg-white-600:active {
   --bg-opacity: 1;

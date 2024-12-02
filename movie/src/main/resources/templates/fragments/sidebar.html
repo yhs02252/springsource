@@ -61,7 +61,7 @@
             <span class="ml-4">Create</span>
           </a>
         </li>
-        <li class="relative px-6 py-3">
+        <li class="relative px-6 py-3" sec:authorize="!isAuthenticated()">
           <a
             class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
             th:href="@{/member/login}"

@@ -45,22 +45,20 @@ public class MovieController {
      * public String getBody(@RequestParam String param) {
      * return "안녕하세요"; // <= "안녕하세요" 데이터를 보냄
      * }
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
      */
-
-    /* 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-     * 
-    */
 
     private final MovieService service;
 

@@ -12,6 +12,8 @@ import com.example.movie.entity.Movie;
 import com.example.movie.entity.Review;
 import com.example.movie.entity.constant.MemberRole;
 
+import jakarta.transaction.Transactional;
+
 @SpringBootTest
 public class MemberRepositoryTest {
 
@@ -33,5 +35,20 @@ public class MemberRepositoryTest {
                     .build();
             memberRepository.save(member);
         });
+    }
+
+    @Test
+    public void testMemberUpdate() {
+        Member member = memberRepository.findById(1L).get();
+        member.setNickName("newNickName");
+        memberRepository.save(member);
+
+    }
+
+    @Test
+    @Transactional
+    public void testMemberUpdateQuery() {
+        memberRepository.updateNickName("newnewNickName", "user1@naver.com");
+
     }
 }

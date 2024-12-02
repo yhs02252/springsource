@@ -81,7 +81,7 @@
           class="grid px-4 py-3 text-xs font-semibold tracking-wide text-gray-500 uppercase border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800"
         >
           <span class="flex items-center col-span-3">
-            Showing 21-30 of 100
+            Showing [[${page}]] of 5
           </span>
           <span class="col-span-2"></span>
           <!-- Pagination -->
@@ -113,7 +113,7 @@
                 <li>
                   <a
                     th:href="@{list(page=${result.page == 1 ? 1 : result.page-1}, size=${result.size}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"
-                    class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                    class=""
                     aria-label="Previous"
                   >
                     <svg
@@ -144,7 +144,7 @@
                 <li>
                   <a
                     th:href="@{list(page=${result.page == result.totalPage ? result.totalPage : result.page+1}, size=${result.size}, type=${requestDTO.type}, keyword=${requestDTO.keyword})}"
-                    class="px-3 py-1 rounded-md rounded-r-lg focus:outline-none focus:shadow-outline-purple"
+                    class=""
                     aria-label="Next"
                   >
                     <svg
