@@ -157,7 +157,8 @@
             </ul>
           </template>
         </li>
-        <!-- Profile menu -->
+
+        <!-- 로그인 전 -->
         <li class="relative" sec:authorize="!isAuthenticated()">
           <button
             class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"
@@ -208,6 +209,8 @@
             </ul>
           </template>
         </li>
+
+        <!-- 로그인 후 -->
         <li class="relative" sec:authorize="isAuthenticated()">
           <button
             class="align-middle rounded-full focus:shadow-outline-purple focus:outline-none"

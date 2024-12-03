@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.movie.dto.AuthMemberDTO;
 import com.example.movie.dto.MemberDTO;
+import com.example.movie.dto.PasswordDTO;
 import com.example.movie.entity.Member;
 import com.example.movie.repository.MemberRepository;
+import com.example.movie.repository.ReviewRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -22,6 +24,7 @@ import lombok.extern.log4j.Log4j2;
 public class MemberDetailsServiceImpl implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+    private final ReviewRepository reviewRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -47,5 +50,4 @@ public class MemberDetailsServiceImpl implements UserDetailsService {
 
         return new AuthMemberDTO(memberDTO);
     }
-
 }

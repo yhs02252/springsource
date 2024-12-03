@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import com.example.movie.entity.Member;
 import com.example.movie.entity.Movie;
@@ -19,6 +20,9 @@ public class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -50,5 +54,16 @@ public class MemberRepositoryTest {
     public void testMemberUpdateQuery() {
         memberRepository.updateNickName("newnewNickName", "user1@naver.com");
 
+    }
+
+    @Commit
+    @Test
+    @Transactional
+    public void testDeleteQuery() {
+
+        // 리뷰 삭제(멤버를 이용하여 삭제)
+        reviewRepository.deleteByMember(Member.builder().mid(1L).build());
+        // 회원 삭제
+        memberRepository.deleteById(1L);
     }
 }
