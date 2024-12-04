@@ -97,10 +97,8 @@ public class MovieImageRepositoryTest {
     }
 
     @Test
-    public void testImage() {
-        MovieDTO movieDTO = new MovieDTO();
-
-        movieDTO.getMovieImageDTOs().size();
-        movieDTO.getMovieImageDTOs().get(0).getPath();
+    public void testGetOldFile() {
+        List<MovieImage> oldFile = movieImageRepository.findOldFileAll();
+        System.out.println(oldFile);
     }
 }

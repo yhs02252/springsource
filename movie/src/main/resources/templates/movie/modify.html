@@ -51,11 +51,13 @@
           </label>
           <div class="mt-4">
             <button
+            sec:authorize="hasRole('ADMIN')"
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-blue-600 focus:outline-none focus:shadow-outline-purple modify"
             >
               수정완료
             </button>
             <button
+            sec:authorize="hasRole('ADMIN')"
             type="button"
               class="px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-dark-600 border border-transparent rounded-lg active:bg-black-600 hover:bg-red-500 focus:outline-none focus:shadow-outline-purple remove"
             >
@@ -99,7 +101,7 @@
         <!-- 리뷰 폼 -->
       </div>
     </div>
-      <form action="" method="post" id="actionForm">
+      <form th:action="@{/movie/remove}" method="post" id="actionForm">
         <input type="hidden" name="mno" th:value="${movieDTO.mno}">
         <input type="hidden" name="page" th:value="${requestDTO.page}">
         <input type="hidden" name="size" th:value="${requestDTO.size}">
@@ -112,6 +114,8 @@
       // 영화명
       const title = '[[${movieDTO.title}]]';
       const mno = '[[${movieDTO.mno}]]'
+      const csrfValue = "[[${_csrf.token}]]"
+
     </script>
     <script th:src="@{/js/modify.js}"></script>
     <script th:src="@{/js/read.js}"></script>

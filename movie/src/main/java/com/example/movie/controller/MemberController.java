@@ -149,10 +149,15 @@ public class MemberController {
 
     @PostMapping("/register")
     public String postRegister(@Valid MemberDTO memberDTO, BindingResult result, boolean check,
-            @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO) {
+            @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Model model) {
         log.info("회원가입 요청 : {}", memberDTO);
 
         if (result.hasErrors()) {
+            return "/member/register";
+        }
+
+        if (!check) {
+            model.addAttribute("check", "약관에 동의 하셔야합니다");
             return "/member/register";
         }
 

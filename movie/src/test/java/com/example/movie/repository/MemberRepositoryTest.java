@@ -30,15 +30,23 @@ public class MemberRepositoryTest {
     @Test
     public void testMemberInsert() {
 
-        IntStream.rangeClosed(1, 50).forEach(i -> {
-            Member member = Member.builder()
-                    .email("user" + i + "@naver.com")
-                    .password(passwordEncoder.encode("1111"))
-                    .nickName("nickName" + i)
-                    .memberRole(MemberRole.MEMBER)
-                    .build();
-            memberRepository.save(member);
-        });
+        // IntStream.rangeClosed(1, 50).forEach(i -> {
+        // Member member = Member.builder()
+        // .email("user" + i + "@naver.com")
+        // .password(passwordEncoder.encode("1111"))
+        // .nickName("nickName" + i)
+        // .memberRole(MemberRole.MEMBER)
+        // .build();
+        // memberRepository.save(member);
+        // });
+
+        Member member = Member.builder()
+                .email("admin@naver.com")
+                .password(passwordEncoder.encode("1111"))
+                .nickName("adminName")
+                .memberRole(MemberRole.ADMIN)
+                .build();
+        memberRepository.save(member);
     }
 
     @Test

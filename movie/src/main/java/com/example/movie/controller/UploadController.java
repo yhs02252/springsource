@@ -110,11 +110,12 @@ public class UploadController {
                 multipartFile.transferTo(savePath);
 
                 // 썸네일 저장
-                if (savePath != pathFinder) {
+                if (!savePath.equals(pathFinder)) {
+                    System.out.println("========== !equals 결과 도출 ===========");
                     System.out.println("결과물" + savePath);
                     System.out.println("결과물 finder" + pathFinder);
 
-                    String thumbSaveName = realUploadBackupPath + File.separator + "s_"
+                    String thumbSaveName = realUploadPath + File.separator + "s_"
                             + uuid + "_"
                             + originName;
                     System.out.println("썸네일 경로 이름" + thumbSaveName);
@@ -123,12 +124,13 @@ public class UploadController {
 
                     Thumbnailator.createThumbnail(savePath.toFile(), thumbFile, 100, 100);
 
-                } else if (savePath == pathFinder) {
+                } else {
+                    System.out.println("========== equals 결과 도출 ===========");
                     System.out.println("결과물" + savePath);
                     System.out.println("결과물 finder" + pathFinder);
 
                     // 썸네일 저장
-                    String thumbSaveName = realUploadPath + File.separator + "s_" + uuid + "_"
+                    String thumbSaveName = realUploadBackupPath + File.separator + "s_" + uuid + "_"
                             + originName;
                     System.out.println("썸네일 경로 이름" + thumbSaveName);
                     File thumbFile = new File(thumbSaveName);

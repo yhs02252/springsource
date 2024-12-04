@@ -31,6 +31,9 @@ fileInput.addEventListener("change", (e) => {
   // formData 서버로 전송(ajax)
   fetch("/upload/upload", {
     method: "post",
+    headers: {
+      "X-CSRF-TOKEN": csrfValue,
+    },
     body: formData,
   })
     .then((response) => response.json())

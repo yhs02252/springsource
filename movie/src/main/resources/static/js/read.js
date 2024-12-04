@@ -42,8 +42,10 @@ const reviewLoaded = () => {
         result += `<div class="text-muted"><span class="small">${formatDate(
           review.regDate
         )}</span></div></div>`;
-        result += `<div class="d-flex flex-column align-self-center"><div class="mb-2"><button class="btn btn-outline-danger btn-sm">삭제</button></div>`;
-        result += `<div class="mb-2"><button class="btn btn-outline-success btn-sm">수정</button></div></div>`;
+        if (review.memberEmail === loginUser) {
+          result += `<div class="d-flex flex-column align-self-center"><div class="mb-2"><button class="btn btn-outline-danger btn-sm">삭제</button></div>`;
+          result += `<div class="mb-2"><button class="btn btn-outline-success btn-sm">수정</button></div></div>`;
+        }
         result += `</div>`;
       });
       reviewList.innerHTML = result;
@@ -53,6 +55,7 @@ const reviewLoaded = () => {
 reviewLoaded();
 
 const reviewNoHidden = reviewForm.querySelector("#reviewNo");
+const memberIdHidden = reviewForm.querySelector("#memberId");
 const memberEamilHidden = reviewForm.querySelector("#memberEmail");
 const nickname = reviewForm.querySelector("[name='nickname']");
 const text = reviewForm.querySelector("[name='text']");
@@ -65,9 +68,9 @@ reviewForm.addEventListener("submit", (e) => {
     reviewNo: reviewNoHidden.value,
     text: text.value,
     movieNo: mno,
-    grade: grade,
-    memberId: 30,
-    memberEmail: "user30@naver.com",
+    grade: grade || 0,
+    memberId: memberIdHidden.value,
+    memberEmail: memberEamilHidden.value,
     memberNickname: nickname.value,
   };
 
@@ -76,7 +79,7 @@ reviewForm.addEventListener("submit", (e) => {
       fetch(`/reviews/${mno}/new`, {
         headers: {
           "content-type": "application/json",
-          // "X-CSRF-TOKEN": csrfValue,
+          "X-CSRF-TOKEN": csrfValue,
         },
         body: JSON.stringify(review),
         method: "post",
@@ -90,7 +93,6 @@ reviewForm.addEventListener("submit", (e) => {
         .then((data) => {
           console.log(data);
           if (data) {
-            nickname.value = "";
             text.value = "";
 
             alert(data + "번 리뷰 작성 완료!");
@@ -102,7 +104,7 @@ reviewForm.addEventListener("submit", (e) => {
     fetch(`/reviews/${mno}/${reviewNoHidden.value}`, {
       headers: {
         "content-type": "application/json",
-        // "X-CSRF-TOKEN": csrfValue,
+        "X-CSRF-TOKEN": csrfValue,
       },
       body: JSON.stringify(review),
       method: "put",
@@ -147,7 +149,11 @@ reviewList.addEventListener("click", (e) => {
 
   // data-rno 값을 가져오기
   const reviewNo = btn.closest(".review-row").dataset.rno;
-  // const replyerEmail = btn.closest(".review-row").dataset.email;
+
+  // 작성자 email
+  // const memberEmail = reviewForm.memberEmail.value;
+  const form = new FormData();
+  form.append("memberEmail", memberEamilHidden.value);
 
   // 클래스명 : classList
   if (btn.classList.contains("btn-outline-danger")) {
@@ -155,10 +161,10 @@ reviewList.addEventListener("click", (e) => {
     if (confirm("이 리뷰를 삭제하시겠습니까?")) {
       fetch(`/reviews/${mno}/${reviewNo}`, {
         headers: {
-          "content-type": "application/json",
-          // "X-CSRF-TOKEN": csrfValue,
+          "X-CSRF-TOKEN": csrfValue,
         },
-        body: JSON.stringify({ mno }),
+        body: form,
+        // body: JSON.stringify(mno),
         method: "delete",
       })
         .then((response) => {

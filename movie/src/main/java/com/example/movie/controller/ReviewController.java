@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,8 +39,9 @@ public class ReviewController {
         return reviews;
     }
 
+    @PreAuthorize("authentication.name == #memberEmail")
     @DeleteMapping("/{mno}/{reviewNo}")
-    public ResponseEntity<Long> deleteReview(@PathVariable Long reviewNo) {
+    public ResponseEntity<Long> deleteReview(@PathVariable Long reviewNo, String memberEmail) {
         log.info("삭제될 rno 확인 : {}", reviewNo);
 
         reviewService.removeReview(reviewNo);
@@ -48,7 +50,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{mno}/{reviewNo}")
-    public ReviewDTO getMethodName(@PathVariable Long reviewNo) {
+    public ReviewDTO geOneReview(@PathVariable Long reviewNo) {
         log.info("가져올 rno 확인 : {}", reviewNo);
 
         ReviewDTO reviewDTO = reviewService.getReview(reviewNo);
@@ -56,8 +58,9 @@ public class ReviewController {
         return reviewDTO;
     }
 
+    @PreAuthorize("authentication.name == #reviewDTO.memberEmail")
     @PutMapping("/{mno}/{reviewNo}")
-    public Long putMethodName(@PathVariable Long reviewNo, @RequestBody ReviewDTO reviewDTO) {
+    public Long putModify(@PathVariable Long reviewNo, @RequestBody ReviewDTO reviewDTO) {
 
         reviewDTO.setReviewNo(reviewNo);
         reviewNo = reviewService.modifyReview(reviewDTO);
