@@ -1,6 +1,8 @@
 package com.example.movie.tesk;
 
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -54,11 +56,23 @@ public class FileCheckTesk {
         }).collect(Collectors.toList());
 
         // upload/2024/12/03/~~~~~_1.jpg
+        List<Path> filePaths = movieImageDTOs.stream()
+                .map(dto -> Paths.get(uploadPath, dto.getImageURL(), dto.getUuid() + "_" + dto.getImgName()))
+                .collect(Collectors.toList());
         // upload/2024/12/03/s_~~~~~~_1.jpg
+        movieImageDTOs.stream()
+                .map(dto -> Paths.get(uploadPath, dto.getImageURL(), "s_" + dto.getUuid() + "_" + dto.getImgName()))
+                .collect(Collectors.toList());
 
         // 어제날짜의 파일 목록 추출
+        File targetDir = Paths.get(uploadPath, getYesterdayFolder()).toFile();
+        File[] removeFiles = targetDir.listFiles(f -> filePaths.contains(f.toPath()) == false);
 
         // 비교후 db 목록과 일치하지 않는 파일 제거
+        for (File file : removeFiles) {
+            log.info("remove file : {}", file.getAbsolutePath());
+            file.delete();
+        }
 
     }
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" layout:decorate="~{/layouts/layout}">
+  <th:block layout:fragment="css">
+    <style></style>
+    <!-- 개별 css영역 -->
+  </th:block>
+  <div th:replace="~{/fragment/header::header}">
+    <!-- header 영역 -->
+  </div>
+
+  <div layout:fragment="content" class="bg-body-tertiary p-5 rounded">
+    <h1>메인 화면</h1>
+  </div>
+
+  <div th:replace="~{/fragment/footer::footer}">
+    <!-- footer 영역 -->
+  </div>
+  <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
+  <th:block layout:fragment="script">
+    <!-- script 영역 -->
+  </th:block>
+</html>
