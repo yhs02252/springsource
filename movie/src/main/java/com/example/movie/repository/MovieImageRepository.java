@@ -17,6 +17,6 @@ public interface MovieImageRepository extends JpaRepository<MovieImage, Long>, M
     @Query("DELETE FROM MovieImage mi WHERE mi.movie = :movie")
     void deleteByMovie(Movie movie);
 
-    @Query(value = "SELECT * FROM MOVIE_IMAGE mi WHERE mi.\"PATH\" = TO_CHAR(SYSDATE -1, 'yyyy/mm/dd')", nativeQuery = true)
+    @Query(value = "SELECT * FROM MOVIE_IMAGE mi WHERE mi.PATH = TO_CHAR(SYSDATE-1, 'yyyy/mm/dd')", nativeQuery = true)
     List<MovieImage> findOldFileAll();
 }

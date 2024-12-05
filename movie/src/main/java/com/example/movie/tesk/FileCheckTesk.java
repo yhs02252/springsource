@@ -45,6 +45,8 @@ public class FileCheckTesk {
         // db에서 전일자 이미지 파일 목록 추출
         List<MovieImage> oldMovieImages = movieImageRepository.findOldFileAll();
 
+        log.info("db 파일 목록 {}", oldMovieImages);
+
         // entity -> dto
         List<MovieImageDTO> movieImageDTOs = oldMovieImages.stream().map(movieImage -> {
             return MovieImageDTO.builder()
@@ -57,12 +59,14 @@ public class FileCheckTesk {
 
         // upload/2024/12/03/~~~~~_1.jpg
         List<Path> filePaths = movieImageDTOs.stream()
-                .map(dto -> Paths.get(uploadPath, dto.getImageURL(), dto.getUuid() + "_" + dto.getImgName()))
+                .map(dto -> Paths.get(uploadPath, dto.getPath() + "\\" + dto.getUuid() + "_" + dto.getImgName()))
                 .collect(Collectors.toList());
         // upload/2024/12/03/s_~~~~~~_1.jpg
         movieImageDTOs.stream()
-                .map(dto -> Paths.get(uploadPath, dto.getImageURL(), "s_" + dto.getUuid() + "_" + dto.getImgName()))
-                .collect(Collectors.toList());
+                .map(dto -> Paths.get(uploadPath, dto.getPath() + "\\" + "s_" + dto.getUuid() + "_" + dto.getImgName()))
+                .forEach(dto -> filePaths.add(dto));
+
+        log.info("db 파일 목록 {}", filePaths.toString());
 
         // 어제날짜의 파일 목록 추출
         File targetDir = Paths.get(uploadPath, getYesterdayFolder()).toFile();

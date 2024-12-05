@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 
 import com.example.movie.dto.MovieDTO;
 import com.example.movie.dto.MovieImageDTO;
@@ -100,5 +101,11 @@ public class MovieImageRepositoryTest {
     public void testGetOldFile() {
         List<MovieImage> oldFile = movieImageRepository.findOldFileAll();
         System.out.println(oldFile);
+    }
+
+    @Test
+    @Commit
+    public void testDelete() {
+        movieRepository.deleteById(57L);
     }
 }
