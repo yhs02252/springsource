@@ -92,7 +92,7 @@
           />
           <circle cx="12" cy="13" r="4" />
         </svg>
-        <strong>Book Project</strong>
+        <strong>MyBatis Book Project</strong>
       </a>
       <form class="'d-flex" role="search" th:action="@{bookList}">
         <select name="type" id="type" class="form-select me-2">
@@ -108,9 +108,9 @@
           <option value="w" th:selected="${pageRequestDTO.type == 'w'}">
             저자
           </option>
-          <option value="p" th:selected="${pageRequestDTO.type == 'p'}">
+          <!-- <option value="p" th:selected="${pageRequestDTO.type == 'p'}">
             출판사
-          </option>
+          </option> -->
         </select>
         <input
           class="form-control me-2"
@@ -125,7 +125,7 @@
         <input type="hidden" name="page" value="1" />
         <input type="hidden" name="size" th:value="${pageRequestDTO.size}" />
       </form>
-      <!-- <button
+      <button
         class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
@@ -135,7 +135,7 @@
         aria-label="Toggle navigation"
       >
         <span class="navbar-toggler-icon"></span>
-      </button> -->
+      </button>
     </div>
   </div>
 </header>

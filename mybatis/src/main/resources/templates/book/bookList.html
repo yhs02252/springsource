@@ -19,69 +19,69 @@
               </tr>
             </thead>
             <tbody>
-              <!-- <tr th:each="dto : ${result.dtoList}">
+              <tr th:each="dto : ${result.dtoList}">
                 <th scope="row" th:text="${dto.id}"></th>
                 <td th:text="${dto.categoryName}"></td>
                 <td>
                   <a
-                    th:href="@{/book/read(id=${dto.id},page=${result.page}, size=${result.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+                    th:href="@{/book/read(id=${dto.id},page=${pageRequestDTO.page}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
                     th:text="${dto.title}"
                     class="text-decoration-none text-reset"
                   ></a>
                 </td>
                 <td th:text="${dto.writer}"></td>
                 <td th:text="${dto.publisherName}"></td>
-              </tr> -->
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
+      <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:if="${result.prev}">
+            <a
+              class="page-link"
+              th:href="@{bookList(page = ${result.start-1},size = ${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+              >Prev목록</a
+            >
+          </li>
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{bookList(page = ${pageRequestDTO.page == 1 ? 1 : pageRequestDTO.page-1},size = ${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+              >이전</a
+            >
+          </li>
+
+          <li
+            th:each="page : ${result.pageList}"
+            th:class="'page-item ' + ${pageRequestDTO.page == page ? 'active' : ''}"
+            aria-current="page"
+          >
+            <a
+              class="page-link"
+              th:href="@{bookList(page=${page}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+              th:text="${page}"
+            ></a>
+          </li>
+
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{bookList(page = ${pageRequestDTO.page == result.totalPage ? result.totalPage : pageRequestDTO.page+1},size = ${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+              >다음</a
+            >
+          </li>
+          <li class="page-item" th:if="${result.next}">
+            <a
+              class="page-link"
+              th:href="@{bookList(page = ${result.end+1},size = ${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+              >Next목록</a
+            >
+          </li>
+        </ul>
+      </nav>
     </section>
-    <nav aria-label="...">
-      <ul class="pagination justify-content-center">
-        <!-- <li class="page-item" th:if="${result.prev}">
-          <a
-            class="page-link"
-            th:href="@{bookList(page = ${result.start-1},size = ${result.size})}"
-            >Prev목록</a
-          >
-        </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            th:href="@{bookList(page = ${result.page == 1 ? 1 : result.page-1},size = ${result.size})}"
-            >이전</a
-          >
-        </li>
-
-        <li
-          th:each="page : ${result.pageList}"
-          th:class="'page-item ' + ${result.page == page ? 'active' : ''}"
-          aria-current="page"
-        >
-          <a
-            class="page-link"
-            th:href="@{bookList(page=${page}, size=${result.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
-            th:text="${page}"
-          ></a>
-        </li>
-
-        <li class="page-item">
-          <a
-            class="page-link"
-            th:href="@{bookList(page = ${result.page == result.end ? result.end : result.page+1},size = ${result.size})}"
-            >다음</a
-          >
-        </li>
-        <li class="page-item" th:if="${result.next}">
-          <a
-            class="page-link"
-            th:href="@{bookList(page = ${result.end+1},size = ${result.size})}"
-            >Next목록</a
-          >
-        </li> -->
-      </ul>
-    </nav>
 
     <!-- <div class="album py-5 bg-body-tertiary">
       <div class="container">

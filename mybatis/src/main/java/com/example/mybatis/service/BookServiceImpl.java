@@ -21,37 +21,38 @@ public class BookServiceImpl implements BookService {
     private final BookMapper bookMapper;
 
     @Override
-    public Long create(BookDTO dto) {
-        return null;
+    public boolean create(BookDTO dto) {
+        return bookMapper.create(dto) == 1 ? true : false;
     }
 
     @Override
     public BookDTO read(Long id) {
-        return null;
+        return bookMapper.read(id);
     }
 
     @Override
-    public void delete(Long id) {
+    public boolean delete(Long id) {
+        return bookMapper.delete(id) == 1 ? true : false;
+    }
+
+    @Override
+    public boolean updatePrice(BookDTO dto) {
+        return bookMapper.update(dto) == 1 ? true : false;
     }
 
     @Override
     public List<CategoryDTO> getCateList() {
-        return null;
+        return bookMapper.categories();
     }
 
     @Override
     public List<PublisherDTO> getPublList() {
-        return null;
+        return bookMapper.publishers();
     }
 
     @Override
     public List<BookDTO> getList(PageRequestDTO pageRequestDTO) {
         return bookMapper.listAll(pageRequestDTO);
-    }
-
-    @Override
-    public Long updatePrice(BookDTO dto) {
-        return null;
     }
 
     @Override

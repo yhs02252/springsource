@@ -11,7 +11,6 @@ import lombok.ToString;
 @Setter
 @Getter
 @AllArgsConstructor
-// http://localhost:8080/book/bookList?page=2&size=20&type=c&keyword=소년 이럴예정
 public class PageRequestDTO {
     private int page;
 

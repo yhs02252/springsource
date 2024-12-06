@@ -5,14 +5,47 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.mybatis.mapper.BookMapper">
+
+  <select id="categories" resultType="com.example.mybatis.dto.CategoryDTO">
+    select c.CATEGORY_NAME, c.CATEGORY_ID as id
+    from CATEGORY c
+  </select>
+
+  <select id="publishers" resultType="com.example.mybatis.dto.PublisherDTO">
+    select p.PUBLISHER_ID as id, p.PUBLISHER_NAME
+    from PUBLISHER p
+  </select>
+
+  <update id="create">
+    INSERT INTO BOOKTBL(BOOK_ID, TITLE, WRITER, PRICE, SALE_PRICE, CREATED_DATE_TIME, LAST_MODIFIED_DATE_TIME, CATEGORY_CATEGORY_ID, PUBLISHER_PUBLISHER_ID)
+    VALUES(book_seq.NEXTVAL,#{title},#{writer},#{price},#{salePrice},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,#{categoryName},#{publisherName})
+  </update>
+
+  <update id="update">
+    UPDATE BOOKTBL
+    SET PRICE=#{price}, SALE_PRICE=#{salePrice}, LAST_MODIFIED_DATE_TIME=CURRENT_TIMESTAMP
+    WHERE BOOK_ID=#{id}
+  </update>
+
+  <update id="delete">
+    DELETE FROM BOOKTBL
+    WHERE BOOK_ID=#{id}
+  </update>
+
   <select id="read" resultType="com.example.mybatis.dto.BookDTO">
-    select * from Booktbl where BOOK_ID = #{id}
+    select b.book_id as id, b.title,b.PRICE,b.SALE_PRICE, b.WRITER, b.CREATED_DATE_TIME, p.PUBLISHER_ID, p.PUBLISHER_NAME, c.CATEGORY_NAME, c.CATEGORY_ID
+    from Booktbl b
+        	    JOIN CATEGORY c ON
+	            	b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+	            JOIN PUBLISHER p ON
+	            	p.PUBLISHER_ID = b.PUBLISHER_PUBLISHER_ID
+    where BOOK_ID = #{id}
   </select>
 
   <select id="listAll" resultType="com.example.mybatis.dto.BookDTO">
 
   <![CDATA[
-    SELECT t.book_id, t.title, t.PUBLISHER_ID, t.PUBLISHER_NAME, t.CATEGORY_NAME, t.CATEGORY_ID
+    SELECT t.book_id as id, t.title, t.WRITER,t.PUBLISHER_ID, t.PUBLISHER_NAME, t.CATEGORY_NAME, t.CATEGORY_ID
     FROM ( SELECT
 	            rownum rn,
 	            b1.*
@@ -39,13 +72,21 @@
 
   <select id="totalCnt" resultType="int">
     select count(*) 
-    from booktbl 
+    from booktbl b
+    	        JOIN CATEGORY c ON
+	            	b.CATEGORY_CATEGORY_ID = c.CATEGORY_ID
+	            JOIN PUBLISHER p ON
+	            	p.PUBLISHER_ID = b.PUBLISHER_PUBLISHER_ID
     where <include refid="criteria"></include> book_id <![CDATA[>]]> 0
   </select>
 
+<!-- 동적 쿼리문 -->
   <sql id="criteria">
+  <!-- prefix = 시작을 "(" 로, suffix = 끝을 ") AND" 로 만들어줘 -->
     <trim prefix="(" suffix=") AND" prefixOverrides="OR ">
+    <!-- 중첩시 사이에 OR 을 넣고 추가해줘 -->
         <trim prefix="OR">
+        <!-- if else 와 같은 역할 -->
             <choose>
                 <when test="type == 't'.toString()">
                   title like '%'||#{keyword}||'%'
@@ -53,9 +94,10 @@
                 <when test="type == 'c'.toString()">
                   CATEGORY_NAME like '%'||#{keyword}||'%'
                 </when>
-                <otherwise>
+                <!-- else -->
+                <when test="type == 'w'.toString()">
                   writer like '%'||#{keyword}||'%'
-                </otherwise>
+                </when>
             </choose>
         </trim>
     </trim>

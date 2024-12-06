@@ -10,7 +10,10 @@ import lombok.Data;
 // Entity ==> Dto : result.getContent() ==> List<~~DTO>로 변경하는 작업 필요
 
 @Data
-public class PageResultDTO<DTO, EN> { // 일반 function 처럼 전달자 지정 -> 다른 객체가 들어올수 있음
+public class PageResultDTO<DTO> { // 일반 function 처럼 전달자 지정 -> 다른 객체가 들어올수 있음
+
+    // 화면에 보여줄 DTO 리스트
+    private List<DTO> dtoList;
 
     // 총 페이지 번호
     private int totalPage;
@@ -29,9 +32,10 @@ public class PageResultDTO<DTO, EN> { // 일반 function 처럼 전달자 지정
     private List<Integer> pageList;
 
     // 페이지 result 생성자
-    public PageResultDTO(PageRequestDTO requestDTO, int total) {
+    public PageResultDTO(PageRequestDTO requestDTO, int total, List<DTO> dtoList) {
 
         this.total = total;
+        this.dtoList = dtoList;
 
         int tempEnd = (int) (Math.ceil(requestDTO.getPage() / 10.0) * requestDTO.getSize());
 
